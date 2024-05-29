@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Horaire extends Model
 {
     use HasFactory;
-    use HasFactory;
+    protected $fillable = ['jour','heure_debut','heure_fin'];
 
     /**
      * Get the activiteOffres associated with this horaire.

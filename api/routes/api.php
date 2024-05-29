@@ -3,8 +3,10 @@
 use App\Http\Controllers\AdminActiviteeController;
 use App\Http\Controllers\AdminActiviteeOffreController;
 use App\Http\Controllers\AdminDemandeController;
+use App\Http\Controllers\AdminHoraireController;
 use App\Http\Controllers\AdminOffreController;
-use App\Http\Controllers\AdminParentController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AnimatorController;
 use App\Http\Controllers\Authentication\EmailVerificationController;
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\LogoutController;
@@ -64,10 +66,10 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
 
 
-    Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
     Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotification']);
 
 });
+Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
 Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
 
 //show
@@ -90,7 +92,16 @@ Route::get('/show/offer/activity/horaires/{activite_id}',[showController::class,
 
 Route::get('/show/offer/activity/enfants/{activite_id}',[showController::class,'showEnfantInActivity']);
 
-//notifications
+
+Route::get('/show/animateurs/',[ShowController::class,'showAnimateurs']);
+Route::get('/show/animateur/{animateur}',[ShowController::class,'showAnimateur']);
+Route::get('/show/all/horaires/animateur/{anim_id?}',[ShowController::class,'showAllHoraireOfAnimateur']);
+Route::get('/show/busy/horaires/animateur/{anim_id?}',[ShowController::class,'showBusyHoraireOfAnimateurs']);
+Route::get('/show/available/horaires/animateur/{anim_id?}',[ShowController::class,'showAvailableHoraireOfAnimateurs']);
+Route::get('/show/new/horaires/animateur/{anim_id}',[ShowController::class,'showHoraireForAnimToAdd']);
+
+//anim
+Route::post('/add/available/horaires/anim/',[AnimatorController::class,'addAvailableHour']);
 
 
 //AdminActiviteeOffreController
@@ -126,4 +137,8 @@ Route::post('/create/demande/',[ParentDemandeController::class,'storeDemande']);
 
 
 
-Route::delete('/delete/parent/by/admin/{parent}',[AdminParentController::class,'deleteParent']);
+Route::delete('/delete/parent/by/admin/{parent}',[AdminUserController::class,'deleteParent']);
+Route::delete('/delete/animateur/by/admin/{animateur}',[AdminUserController::class,'deleteAnimateur']);
+
+
+Route::post('/create/horaire/',[AdminHoraireController::class,'createHoraire']);

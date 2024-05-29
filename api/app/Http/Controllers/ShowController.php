@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActiviteOffre;
 use App\Models\Activite;
 use App\Models\Administrateur;
+use App\Models\Animateur;
 use App\Models\Demande;
 use App\Models\DemandeInscription;
 use App\Models\Enfant;
@@ -13,6 +14,7 @@ use App\Models\Hda;
 use App\Models\Horaire;
 use App\Models\Notification;
 use App\Models\Offre;
+use App\Models\PlanningAnim;
 use App\Models\PlanningEnf;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -168,5 +170,52 @@ class ShowController extends Controller
             ->select('horaires.jour','horaires.heure_debut','horaires.heure_fin','activites.titre','users.name')
             ->get();
         return response()->json($plannings,200);
+    }
+
+    public function showAnimateurs(){
+        return response()->json(Animateur::latest()->get(),200);
+    }
+    public function showAnimateur(Animateur $animateur){
+        return response()->json($animateur,200);
+    }
+    public function showAllHoraireOfAnimateur(Request $request){
+        if($request['anim_id']) $anim_id = $request->anim_id;
+        else $anim_id = Animateur::where('user_id',auth()->id())->first()->id;
+        $Horaires = Horaire::join('hd_anims','hd_anims.horaire_id','=','horaires.id')
+            ->where('anim_id',$anim_id)
+            ->select('horaires.*')
+            ->get();
+        return response()->json($Horaires,200);
+    }
+    public function showBusyHoraireOfAnimateurs(Request $request){
+        if($request['anim_id']) $anim_id = $request->anim_id;
+        else $anim_id = Animateur::where('user_id',auth()->id())->first()->id;
+        $Horaires = PlanningAnim::join('horaires','planning_anims.horaire_id','=','horaires.id')
+            ->where('anim_id',$anim_id)
+            ->select('horaires.*')
+            ->get();
+        return response()->json($Horaires,200);
+    }
+    public function showAvailableHoraireOfAnimateurs(Request $request){
+        if($request['anim_id']) $anim_id = $request->anim_id;
+        else $anim_id = Animateur::where('user_id',auth()->id())->first()->id;
+        $horaires = Horaire::join('hd_anims', 'hd_anims.horaire_id', '=', 'horaires.id')
+            ->leftJoin('planning_anims','planning_anims.horaire_id', '=', 'horaires.id')
+            ->where('hd_anims.anim_id', $anim_id)
+            ->whereNull('planning_anims.horaire_id')
+            ->select('horaires.*')
+            ->get();
+        return response()->json($horaires, 200);
+    }
+    public function showHoraireForAnimToAdd($anim_id){
+        $horaires = Horaire::leftJoin('hd_anims', function ($join) use ($anim_id) {
+            $join->on('horaires.id', '=', 'hd_anims.horaire_id')
+                ->where('hd_anims.anim_id', '=', $anim_id);
+        })
+            ->whereNull('hd_anims.horaire_id')
+            ->select('horaires.*')
+            ->get();
+
+        return response()->json($horaires, 200);
     }
 }

@@ -14,7 +14,7 @@ class HdAnim extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [];
+    protected $fillable = ['anim_id','horaire_id'];
 
     /**
      * Get the animateurs that belong to the HdAnim.
