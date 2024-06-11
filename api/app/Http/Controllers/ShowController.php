@@ -219,3 +219,5 @@ class ShowController extends Controller
         return response()->json($horaires, 200);
     }
 }
+
+//    public function showOfferWithFilter()

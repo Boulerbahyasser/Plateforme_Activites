@@ -12,6 +12,8 @@ use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\LogoutController;
 use App\Http\Controllers\Authentication\RegistrationController;
 use App\Http\Controllers\Authentication\ResetPasswordCntroller;
+use App\Http\Controllers\EnfantController;
+use App\Http\Controllers\FatherController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ParentDemandeController;
 use App\Http\Controllers\ParentFactureController;
@@ -142,3 +144,18 @@ Route::delete('/delete/animateur/by/admin/{animateur}',[AdminUserController::cla
 
 
 Route::post('/create/horaire/',[AdminHoraireController::class,'createHoraire']);
+
+
+Route::put('/devis/{id}',[ ParentDemandeController::class,'UpdateDevis']);
+
+
+
+
+Route::put('/parent/update',[FatherController::class, 'UpdateFather']);
+Route::delete('/parent/delete',[FatherController::class, 'DestroyParent']);
+Route::post('/enfant/create/',[EnfantController::class, 'AddEnfant']);
+Route::post('/enfant/update/{id}',[EnfantController::class, 'UpdateEnfant']);
+Route::delete('/enfant/delete/{enfant}',[EnfantController::class, 'DestroyEnfant']);
+
+
+Route::get('/activiteoffre/{id}',[ParentDemandeController::class, 'ShowHorairetoEnfant']);

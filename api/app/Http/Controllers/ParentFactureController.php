@@ -16,7 +16,7 @@ class ParentFactureController extends Controller
 {
     public function createFacture()
     {
-        $user_id = 79;
+        $user_id = auth()->id();
         $parent = Father::where('user_id', $user_id)->first();
         $lesDevis = Devis::join('demandes', 'devis.demande_id', '=', 'demandes.id')
             ->join('demande_inscriptions', 'demandes.id', '=', 'demande_inscriptions.demande_id')
