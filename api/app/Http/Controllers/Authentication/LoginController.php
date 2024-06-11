@@ -23,11 +23,13 @@ class LoginController extends Controller
             $user = User::where('email', $loginUserData['email'])->first();
             if ($user and Hash::check($loginUserData['password'], $user->password)) {
                 $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+                $cookie = cookie('auth_token', $token, 60, null, null, false, true);
+
                 return response()->json([
                     'message'=>'login successfully ',
                     'role'=>$user->role,
                     'token' => $token,
-                ],200);
+                ],200)->cookie($cookie);
             }else{
                 return response()->json([
                     'message' => 'Invalid Credentials'
