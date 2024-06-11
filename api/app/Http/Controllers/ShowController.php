@@ -82,7 +82,7 @@ class ShowController extends Controller
         $results = HDA::join('horaires', 'hdas.horaire_id', '=', 'horaires.id')
             ->where('activite_offre_id', $activite_id)
             ->where('nbr_place_restant','>',0)
-            ->select('jour', 'heure_debut', 'heure_fin','nbr_place_restant','eff_max','eff_min')
+            ->select('horaires.id','jour', 'heure_debut', 'heure_fin','nbr_place_restant','eff_max','eff_min')
             ->get();
         return response()->json($results,200);
     }
