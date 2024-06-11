@@ -16,6 +16,7 @@ class AdminOffreController extends Controller
             'date_debut' => 'required|date',
             'date_fin' => 'required|date|after:Date_Debut',
             'description' => 'required',
+            'domaine' => 'required'
         ]);
         $user_id = auth()->id();
         $admin = Administrateur::where('user_id',$user_id)->first();

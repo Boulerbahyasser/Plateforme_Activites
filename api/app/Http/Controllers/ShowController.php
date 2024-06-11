@@ -98,7 +98,7 @@ class ShowController extends Controller
     public function showEnfantOfParent(){
         $user_id = auth()->id();
         $parent = Father::where('user_id',$user_id)->first();
-        $enfants = Enfant::where('father_id',$parent->id)->first();
+        $enfants = Enfant::where('father_id',$parent->id)->get();
         return response()->json([
             $enfants
         ],200);

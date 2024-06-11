@@ -52,8 +52,6 @@ Route::middleware(['auth:sanctum'])->group(function (){
         ->name('Myprofile');
     Route::post('logout', [LogoutController::class,'logout'])->name('logout');
     Route::get('/show/offers/',[showController::class,'showOffers']);
-    Route::get('/show/parent/enfant/',[showController::class,'showEnfantOfParent']);
-    Route::get('/show/notification/parent/top/',[ShowController::class,'showTopParentNotifications']);
     Route::get('/show/notification/parent/remaining/',[ShowController::class,'showRemainingParentNotifications']);
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
 
@@ -61,8 +59,10 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('/show/demandes/parent/',[showController::class, 'showDemandesOfParent']);
     Route::get('/show/parent/demande/activities/{demande_id}',[ShowController::class,'showActivitiesInDemandeOfParent']);
     Route::get('/show/parent/demande/activity/enfants/{demande_id}/{activite_offre_id}',[ShowController::class,'showEnfantInActivityInDemandeOfParent']);
+    Route::get('/show/notification/parent/top/',[ShowController::class,'showTopParentNotifications']);
 
     Route::delete('/delete/notification/{notification}',[NotificationController::class,'deleteNotification']);
+    Route::get('/show/parent/enfant/',[showController::class,'showEnfantOfParent']);
 
 
 
