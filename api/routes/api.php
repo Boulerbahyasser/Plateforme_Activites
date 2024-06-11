@@ -50,25 +50,36 @@ Route::middleware(['auth:sanctum'])->group(function (){
         ->middleware('Check_Admin_User');
     Route::get('my-profile', [LoginController::class,'AuthenticatedProflie'])
         ->name('Myprofile');
+
     Route::post('logout', [LogoutController::class,'logout'])->name('logout');
-    Route::get('/show/offers/',[showController::class,'showOffers']);
     Route::get('/show/parent/enfant/',[showController::class,'showEnfantOfParent']);
     Route::get('/show/notification/parent/top/',[ShowController::class,'showTopParentNotifications']);
     Route::get('/show/notification/parent/remaining/',[ShowController::class,'showRemainingParentNotifications']);
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
+    Route::get('/show/offers/',[showController::class,'showOffers']);
 
     // show demandes of parent
     Route::get('/show/demandes/parent/',[showController::class, 'showDemandesOfParent']);
     Route::get('/show/parent/demande/activities/{demande_id}',[ShowController::class,'showActivitiesInDemandeOfParent']);
     Route::get('/show/parent/demande/activity/enfants/{demande_id}/{activite_offre_id}',[ShowController::class,'showEnfantInActivityInDemandeOfParent']);
-
     Route::delete('/delete/notification/{notification}',[NotificationController::class,'deleteNotification']);
-
-
-
     Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotification']);
 
+
+
+
+
+
+
+
+
 });
+
+
+
+
+
+
 Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
 Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
 
