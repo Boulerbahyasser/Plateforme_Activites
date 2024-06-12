@@ -14,6 +14,7 @@ use App\Models\Hda;
 use App\Models\Horaire;
 use App\Models\Notification;
 use App\Models\Offre;
+use App\Models\Pack;
 use App\Models\PlanningAnim;
 use App\Models\PlanningEnf;
 use App\Models\User;
@@ -23,87 +24,110 @@ use Illuminate\Support\Facades\Auth;
 class ShowController extends Controller
 {
     //tested
-    public function showActivities(){
+    public function showActivities()
+    {
 
-        return response()->json(Activite::latest()->get(),200);
+        return response()->json(Activite::latest()->get(), 200);
     }
     // tested
     // we dont need to filter the offers according to the id_admin
-    public function showOffers(){
-        return response()->json(Offre::latest()->get(),200);
+    public function showOffers()
+    {
+        return response()->json(Offre::latest()->get(), 200);
     }
-    public function showOffer(Offre $offre){
-        return response()->json($offre,200);
+
+    public function showOffer(Offre $offre)
+    {
+        return response()->json($offre, 200);
     }
+
 // 1/2 tested
-    public function showDemandesOfAdmin() {
+    public function showDemandesOfAdmin()
+    {
         $user_id = auth()->id();
-        $admin = Administrateur::where('user_id',$user_id)->first();
+        $admin = Administrateur::where('user_id', $user_id)->first();
         return response()->json(
-            Demande::join('demande_inscriptions','demande_inscriptions.demande_id', '=', 'demandes.id')
+            Demande::join('demande_inscriptions', 'demande_inscriptions.demande_id', '=', 'demandes.id')
                 ->where('admin_id', $admin->id)
-                ->where('statut','valide')
-                ->where('etat','en cours')
+                ->where('statut', 'valide')
+                ->where('etat', 'en cours')
                 ->select('demande.id', 'date')
                 ->get(),
             200
         );
     }
+
 //tested
-    public function showTopOffers(){
-        return response()->json(Offre::orderBy('remise', 'desc')->limit(3)->get(),200);
+    public function showTopOffers()
+    {
+        return response()->json(Offre::orderBy('remise', 'desc')->limit(3)->get(), 200);
     }
-    public function showRemainingOffers(){
-        return response()->json(Offre::orderBy('remise', 'desc')->skip(3)->take(PHP_INT_MAX)->get(),200);
+
+    public function showRemainingOffers()
+    {
+        return response()->json(Offre::orderBy('remise', 'desc')->skip(3)->take(PHP_INT_MAX)->get(), 200);
     }
-    public function showActivitiesOfferInOffer(Offre $offer){
+
+    public function showActivitiesOfferInOffer(Offre $offer)
+    {
 
         $activities = ActiviteOffre::where('offre_id', $offer->id)->latest()->get();
-        return response()->json($activities,200);
-    }
-    public function showActivitiesInOfferAllInfos(Offre $offer){
-        $activities = ActiviteOffre::join('activites','activites.id','activite_offres.activite_id')
-                                    ->select('activite_offres.id','titre','image_pub','description',
-                                        'lien_youtube','objectifs','domaine',
-                                        'tarif','tarif_remise','age_min','age_max','nbr_seance',
-                                        'volume_horaire','option_paiement')
-                                    ->where('offre_id', $offer->id)->get();
-        return response()->json($activities,200);
-    }
-    public function showActivitiesInOffer(Offre $offer){
-        $activities = ActiviteOffre::join('activites','activites.id','activite_offres.activite_id')
-            ->select('activite_offres.id','titre','image_pub','description',
-                'lien_youtube','objectifs','domaine')
-            ->where('offre_id', $offer->id)->get();
-        return response()->json($activities,200);
+        return response()->json($activities, 200);
     }
 
-    public function showHoraireInActivity($activite_id){
+    public function showActivitiesInOfferAllInfos(Offre $offer)
+    {
+        $activities = ActiviteOffre::join('activites', 'activites.id', 'activite_offres.activite_id')
+            ->select('activite_offres.id', 'titre', 'image_pub', 'description',
+                'lien_youtube', 'objectifs', 'domaine',
+                'tarif', 'tarif_remise', 'age_min', 'age_max', 'nbr_seance',
+                'volume_horaire', 'option_paiement')
+            ->where('offre_id', $offer->id)->get();
+        return response()->json($activities, 200);
+    }
+
+    public function showActivitiesInOffer(Offre $offer)
+    {
+        $activities = ActiviteOffre::join('activites', 'activites.id', 'activite_offres.activite_id')
+            ->select('activite_offres.id', 'titre', 'image_pub', 'description',
+                'lien_youtube', 'objectifs', 'domaine')
+            ->where('offre_id', $offer->id)->get();
+        return response()->json($activities, 200);
+    }
+
+    public function showHoraireInActivity($activite_id)
+    {
         $results = HDA::join('horaires', 'hdas.horaire_id', '=', 'horaires.id')
             ->where('activite_offre_id', $activite_id)
-            ->where('nbr_place_restant','>',0)
-            ->select('horaires.id','jour', 'heure_debut', 'heure_fin','nbr_place_restant','eff_max','eff_min')
+            ->where('nbr_place_restant', '>', 0)
+            ->select('horaires.id', 'jour', 'heure_debut', 'heure_fin', 'nbr_place_restant', 'eff_max', 'eff_min')
             ->get();
-        return response()->json($results,200);
+        return response()->json($results, 200);
     }
+
     //tested
-    public function showEnfantInActivity($activite_id){
+    public function showEnfantInActivity($activite_id)
+    {
         $results = Enfant::join('planning_enfs', 'enfants.id', '=', 'planning_enfs.enfant_id')
             ->select('enfants.id', 'enfants.father_id', 'enfants.nom', 'enfants.prenom',
                 'enfants.date_naissance', 'enfants.niveau', 'enfants.photo')
             ->where('planning_enfs.activite_id', '=', $activite_id)
             ->get();
-        return response()->json($results,200);
+        return response()->json($results, 200);
     }
-    public function showEnfantOfParent(){
+
+    public function showEnfantOfParent()
+    {
         $user_id = auth()->id();
-        $parent = Father::where('user_id',$user_id)->first();
-        $enfants = Enfant::where('father_id',$parent->id)->get();
+        $parent = Father::where('user_id', $user_id)->first();
+        $enfants = Enfant::where('father_id', $parent->id)->get();
         return response()->json([
             $enfants
-        ],200);
+        ], 200);
     }
-    public function showTopParentNotifications(){
+
+    public function showTopParentNotifications()
+    {
         $user_id = auth()->id();
         $notifications = Notification::where('user_id', $user_id)
             ->orderBy('date', 'desc')
@@ -111,103 +135,124 @@ class ShowController extends Controller
             ->get();
         return response()->json($notifications, 200);
     }
-    public function showRemainingParentNotifications(){
+
+    public function showRemainingParentNotifications()
+    {
         $user_id = auth()->id();
         $notifications = Notification::where('user_id', $user_id)
             ->orderBy('date', 'desc')
             ->skip(7)
             ->take(PHP_INT_MAX)
             ->get();
-        return response()->json($notifications,200);
+        return response()->json($notifications, 200);
     }
-    public function showDemandesOfParent(){
+
+    public function showDemandesOfParent()
+    {
         $user_id = auth()->id();
-        $parent = Father::where('user_id',$user_id)->first();
+        $parent = Father::where('user_id', $user_id)->first();
         return response()->json(
-            Demande::join('demande_inscriptions','demande_inscriptions.demande_id', '=', 'demandes.id')
-                ->join('enfants','demande_inscriptions.enfant_id','enfants.id')
-                ->where('father_id',$parent->id)
-                ->where('statut','valide')
+            Demande::join('demande_inscriptions', 'demande_inscriptions.demande_id', '=', 'demandes.id')
+                ->join('enfants', 'demande_inscriptions.enfant_id', 'enfants.id')
+                ->where('father_id', $parent->id)
+                ->where('statut', 'valide')
                 ->select('demandes.id', 'date')
                 ->get(),
             200
         );
     }
-    public function showActivitiesInDemandeOfParent($demande_id){
+
+    public function showActivitiesInDemandeOfParent($demande_id)
+    {
         $etat = AdminDemandeController::isDemandeVerified($demande_id);
-        $demandes = DemandeInscription::where('demande_id',$demande_id)
+        $demandes = DemandeInscription::where('demande_id', $demande_id)
             ->select('activite_offre_id')
             ->get();
         $i = 0;
-        foreach ($demandes as $demande){
-        $activities[$i] = ActiviteOffre::join('activites','activites.id','activite_offres.activite_id')
-            ->select('activite_offres.id','titre','image_pub','description',
-                'lien_youtube','objectifs','domaine')
-            ->where('activite_offres.id', $demande->activite_offre_id)->first();
+        foreach ($demandes as $demande) {
+            $activities[$i] = ActiviteOffre::join('activites', 'activites.id', 'activite_offres.activite_id')
+                ->select('activite_offres.id', 'titre', 'image_pub', 'description',
+                    'lien_youtube', 'objectifs', 'domaine')
+                ->where('activite_offres.id', $demande->activite_offre_id)->first();
             $activities[$i++]->etat = $etat;
         }
-        return response()->json($activities,200);
+        return response()->json($activities, 200);
     }
-    public function showEnfantInActivityInDemandeOfParent($demande_id,$activite_offre_id){
-        $demandes = DemandeInscription::where('demande_id',$demande_id)
-            ->where('activite_offre_id',$activite_offre_id)
-            ->select('enfant_id','etat')
+
+    public function showEnfantInActivityInDemandeOfParent($demande_id, $activite_offre_id)
+    {
+        $demandes = DemandeInscription::where('demande_id', $demande_id)
+            ->where('activite_offre_id', $activite_offre_id)
+            ->select('enfant_id', 'etat')
             ->get();
         $i = 0;
-        foreach ($demandes as $demande){
+        foreach ($demandes as $demande) {
             $enfants[$i] = Enfant::find($demande->enfant_id);
             $enfants[$i++]->etat = $demande->etat;
         }
-        return response()->json($enfants,200);
-    }
-    public function showPlaningEnfant($enfant_id){
-        $plannings = Horaire::join('planning_enfs','horaires.id','=','planning_enfs.horaire_id')
-            ->join('activites','activites.id','=','planning_enfs.activite_id')
-            ->join('planning_anims','planning_anims.activite_id','=','activites.id')
-            ->join('animateurs','animateurs.id','=','planning_anims.anim_id')
-            ->join('users','users.id','=','animateurs.user_id')
-            ->where('enfant_id',$enfant_id)
-            ->select('horaires.jour','horaires.heure_debut','horaires.heure_fin','activites.titre','users.name')
-            ->get();
-        return response()->json($plannings,200);
+        return response()->json($enfants, 200);
     }
 
-    public function showAnimateurs(){
-        return response()->json(Animateur::latest()->get(),200);
+    public function showPlaningEnfant($enfant_id)
+    {
+        $plannings = Horaire::join('planning_enfs', 'horaires.id', '=', 'planning_enfs.horaire_id')
+            ->join('activites', 'activites.id', '=', 'planning_enfs.activite_id')
+            ->join('planning_anims', 'planning_anims.activite_id', '=', 'activites.id')
+            ->join('animateurs', 'animateurs.id', '=', 'planning_anims.anim_id')
+            ->join('users', 'users.id', '=', 'animateurs.user_id')
+            ->where('enfant_id', $enfant_id)
+            ->select('horaires.jour', 'horaires.heure_debut', 'horaires.heure_fin', 'activites.titre', 'users.name')
+            ->get();
+        return response()->json($plannings, 200);
     }
-    public function showAnimateur(Animateur $animateur){
-        return response()->json($animateur,200);
+
+    public function showAnimateurs()
+    {
+        return response()->json(Animateur::latest()->get(), 200);
     }
-    public function showAllHoraireOfAnimateur(Request $request){
-        if($request['anim_id']) $anim_id = $request->anim_id;
-        else $anim_id = Animateur::where('user_id',auth()->id())->first()->id;
-        $Horaires = Horaire::join('hd_anims','hd_anims.horaire_id','=','horaires.id')
-            ->where('anim_id',$anim_id)
+
+    public function showAnimateur(Animateur $animateur)
+    {
+        return response()->json($animateur, 200);
+    }
+
+    public function showAllHoraireOfAnimateur(Request $request)
+    {
+        if ($request['anim_id']) $anim_id = $request->anim_id;
+        else $anim_id = Animateur::where('user_id', auth()->id())->first()->id;
+        $Horaires = Horaire::join('hd_anims', 'hd_anims.horaire_id', '=', 'horaires.id')
+            ->where('anim_id', $anim_id)
             ->select('horaires.*')
             ->get();
-        return response()->json($Horaires,200);
+        return response()->json($Horaires, 200);
     }
-    public function showBusyHoraireOfAnimateurs(Request $request){
-        if($request['anim_id']) $anim_id = $request->anim_id;
-        else $anim_id = Animateur::where('user_id',auth()->id())->first()->id;
-        $Horaires = PlanningAnim::join('horaires','planning_anims.horaire_id','=','horaires.id')
-            ->where('anim_id',$anim_id)
+
+    public function showBusyHoraireOfAnimateurs(Request $request)
+    {
+        if ($request['anim_id']) $anim_id = $request->anim_id;
+        else $anim_id = Animateur::where('user_id', auth()->id())->first()->id;
+        $Horaires = PlanningAnim::join('horaires', 'planning_anims.horaire_id', '=', 'horaires.id')
+            ->where('anim_id', $anim_id)
             ->select('horaires.*')
             ->get();
-        return response()->json($Horaires,200);
+        return response()->json($Horaires, 200);
     }
-    public function showAvailableHoraireOfAnimateurs(Request $request){
-        if($request['anim_id']) $anim_id = $request->anim_id;
-        else $anim_id = Animateur::where('user_id',auth()->id())->first()->id;
+
+    public function showAvailableHoraireOfAnimateurs(Request $request)
+    {
+        if ($request['anim_id']) $anim_id = $request->anim_id;
+        else $anim_id = Animateur::where('user_id', auth()->id())->first()->id;
         $horaires = Horaire::join('hd_anims', 'hd_anims.horaire_id', '=', 'horaires.id')
-            ->leftJoin('planning_anims','planning_anims.horaire_id', '=', 'horaires.id')
+            ->leftJoin('planning_anims', 'planning_anims.horaire_id', '=', 'horaires.id')
             ->where('hd_anims.anim_id', $anim_id)
             ->whereNull('planning_anims.horaire_id')
             ->select('horaires.*')
             ->get();
         return response()->json($horaires, 200);
     }
-    public function showHoraireForAnimToAdd($anim_id){
+
+    public function showHoraireForAnimToAdd($anim_id)
+    {
         $horaires = Horaire::leftJoin('hd_anims', function ($join) use ($anim_id) {
             $join->on('horaires.id', '=', 'hd_anims.horaire_id')
                 ->where('hd_anims.anim_id', '=', $anim_id);
@@ -217,5 +262,12 @@ class ShowController extends Controller
             ->get();
 
         return response()->json($horaires, 200);
+    }
+
+    public function showOffersFiltered($domaine){
+        return response()->json(Offre::where('domaine', $domaine)->get(), 200);
+    }
+    public function showPacks(){
+        return response()->json(Pack::latest()->get(),200);
     }
 }

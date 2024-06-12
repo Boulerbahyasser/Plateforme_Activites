@@ -69,6 +69,8 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotification']);
 
 });
+
+Route::get('show/offers/filtered/{domaine}',[ShowController::class,'showOffersFiltered']);
 Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
 Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
 
@@ -133,7 +135,7 @@ Route::post('/create/activity/',[AdminActiviteeController::class,'createActivity
 Route::put('/update/activity/{activity}',[AdminActiviteeController::class,'updateActivity']);
 
 Route::delete('/delete/activity/{activity}',[AdminActiviteeController::class,'destroyActivity']);
-Route::post('/create/demande/',[ParentDemandeController::class,'storeDemande']);
+Route::post('/create/demande/{pack?}',[ParentDemandeController::class,'storeDemande']);
 
 
 
