@@ -16,7 +16,7 @@ class DemandeInscription extends Model
      * @var array<int, string>
      */
     protected $fillable = ['enfant_id', 'activite_offre_id', 'demande_id',
-                            'horaire1', 'horaire2', 'etat', 'motif'];
+                            'horaire', 'etat', 'motif'];
     static public function sqlUpdate($request,$demande_id,$activite_offre_id,$enfant_id){
         DB::update('UPDATE demande_inscriptions SET etat = ?, motif = ?, updated_at = ? WHERE enfant_id = ? AND activite_offre_id = ? AND demande_id = ?', [
             $request->etat,
