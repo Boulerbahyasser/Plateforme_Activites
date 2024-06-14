@@ -148,7 +148,7 @@ h1 {
 
 .offer-price {
   font-size: 2rem;
-  color: #e74c3c;
+  color: #010b46;
   font-weight: bold;
 }
 

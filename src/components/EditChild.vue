@@ -99,7 +99,7 @@ export default {
     async deleteChild() {
       const childId = this.$route.params.id;
       try {
-        await axios.delete(`http://localhost:8000/api/children/${childId}`);
+        await axios.delete(`http://localhost:8000/api/delete/children/${childId}`);
         this.$router.push({ name: 'userchildren' });
       } catch (error) {
         console.error('Erreur lors de la suppression de l\'enfant:', error);

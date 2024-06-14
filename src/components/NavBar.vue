@@ -3,12 +3,12 @@
   <nav class="navbar">
     <div class="navbar-left">
       <router-link to="/" class="navbar-brand">
-        <img src="@/assets/logo.png" alt="Logo" class="navbar-logo">
+        <img src="@/assets/logo_projet.jpg" alt="Logo" class="navbar-logo">
       </router-link>
     </div>
     <ul class="navbar-center" :class="{ 'show': isMenuOpen }"> <!-- Si isMenuOpen est vrai (true), alors la classe show sera ajoutée à l'élément ul. Si isMenuOpen est faux (false), alors la classe show ne sera pas appliquée. -->
       <li><router-link to="/">Welcome</router-link></li>
-      <li><router-link to="/about">About Us</router-link></li>
+      <li><router-link to="/AproposNous">À propos de nous </router-link></li>
       <li><router-link to="/how-to-use">How to use</router-link></li>
       <li><router-link to="/contact">Contact</router-link></li>
     </ul>

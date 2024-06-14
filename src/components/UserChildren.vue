@@ -1,12 +1,13 @@
 <template>
   <div class="user-children-container">
     <h1>Mes Enfants</h1>
+    <button @click="goToAddChild" class="add-child-btn">Ajouter un enfant</button>
     <div v-if="loading" class="loader">Chargement des enfants...</div>
     <div v-else-if="error" class="error-message">Erreur lors de la récupération des enfants. Veuillez réessayer plus tard.</div>
     <div v-else>
       <div v-for="child in children" :key="child.id" class="child-card">
         <div class="child-photo">
-          <img :src="child.photo || '@/assets/default-child.png'" alt="Photo de l'enfant">
+          <img :src="child.photo || require('@/assets/child.png')" alt="Photo de l'enfant">
         </div>
         <div class="child-details">
           <h3>{{ child.nom }} {{ child.prenom }}</h3>
@@ -15,11 +16,13 @@
         </div>
         <div class="action-buttons">
           <button @click="goToChildPlanning(child.id)">Planification</button>
+          <button @click="editChild(child.id)">Éditer</button>
         </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from '@/axios';
@@ -39,7 +42,6 @@ export default {
   methods: {
     async fetchChildren() {
       try {
-
         const response = await axios.get('http://localhost:8000/api/show/parent/enfant/');
         this.children = response.data;
         this.loading = false;
@@ -47,17 +49,21 @@ export default {
         console.error('Erreur lors de la récupération des enfants:', error);
         this.loading = false;
         this.error = true;
-
-
       }
     },
-
     goToChildPlanning(childId) {
       this.$router.push({ name: 'childplanning', params: { id: childId } });
+    },
+    editChild(childId) {
+      this.$router.push({ name: 'editchild', params: { id: childId } });
+    },
+    goToAddChild() {
+      this.$router.push({ name: 'AjouterEnfant' });
     }
   }
 };
 </script>
+
 
 <style scoped>
 .user-children-container {
@@ -72,6 +78,27 @@ h1 {
   color: #34495e;
   font-size: 2.5rem;
   margin-bottom: 20px;
+}
+
+.add-child-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  background-color: #27ae60;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.add-child-btn:hover {
+  background-color: #219150;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.add-child-btn:active {
+  background-color: #1b7a40;
 }
 
 .loader {
@@ -129,7 +156,7 @@ h1 {
 
 .action-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
 }
 

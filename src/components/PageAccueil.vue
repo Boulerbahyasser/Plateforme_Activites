@@ -1,16 +1,16 @@
 <template>
   <NavbarElement />
-  <div class="welcome-container">
-    <div class="text-section">
+  <div class="conteneurBienvenue">
+    <div class="sectionTexte">
       <h1>Apprenez vos enfants Sans Limites</h1>
       <p>Commencez dès maintenant, inscrivez vos enfants à des activités enrichissantes, gérez les plannings et les paiements en toute simplicité.</p>
       <div>
-        <button type="button" @click="goToSignUp" class="signup-btn">Inscrivez-vous gratuitement</button>
-        <button type="button" @click="goToSignIn" class="signin-btn">Explorez les cours</button>
+        <button type="button" @click="InscriptionMethode" class="boutonInscription">Inscrivez-vous gratuitement</button>
+        <button type="button" @click="ConnexionMethoode" class="boutonConnexion">Explorez les cours</button>
       </div>
     </div>
-    <div class="image-section">
-      <img src="@/assets/child.png" alt="Learning" class="welcome-image">
+    <div class="sectionImage">
+      <img src="@/assets/child.png" alt="Learning" class="imageBienvenue">
     </div>
   </div>
 </template>
@@ -19,23 +19,23 @@
 import NavbarElement from "@/components/NavBar.vue";
 
 export default {
-  name:'WelcomePage' ,
+  name:'PageAccueil' ,
   components: {
     NavbarElement
   },
   methods: {
-    goToSignUp() {
-      this.$router.push('/signup');
+    InscriptionMethode() {
+      this.$router.push('/InscriptionPage');
     },
-    goToSignIn() {
-      this.$router.push('/signin');
+    ConnexionMethoode() {
+      this.$router.push('/ConnexionPage');
     }
   }
 }
 </script>
 
 <style scoped>
-.welcome-container {
+.conteneurBienvenue {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -46,7 +46,7 @@ export default {
   background-repeat: no-repeat;
 }
 
-.text-section {
+.sectionTexte {
   flex: 1;
   max-width: 50%;
   padding-right: 50px;
@@ -68,7 +68,7 @@ p {
   line-height: 1.5;
 }
 
-.signup-btn, .signin-btn {
+.boutonInscription, .boutonConnexion {
   padding: 15px 30px;
   margin-top: 20px;
   border-radius: 10px;
@@ -78,46 +78,46 @@ p {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.signup-btn {
+.boutonInscription {
   background-color: #ff6384;
   color: white;
 }
 
-.signin-btn {
+.boutonConnexion {
   background-color: #36a2eb;
   color: white;
 }
 
-.signup-btn:hover, .signin-btn:hover {
+.boutonInscription:hover, .boutonConnexion:hover {
   transform: scale(1.05);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.image-section {
+.sectionImage {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.welcome-image {
+.imageBienvenue {
   max-width: 80%;
   border-radius: 15px;
   object-fit: cover;
 }
 
 @media (max-width: 768px) {
-  .welcome-container {
+  .conteneurBienvenue {
     flex-direction: column;
     text-align: center;
   }
 
-  .text-section, .image-section {
+  .sectionTexte, .sectionImage {
     max-width: 100%;
     padding: 0 20px;
   }
 
-  .welcome-image {
+  .imageBienvenue {
     max-width: 100%;
     height: auto;
   }

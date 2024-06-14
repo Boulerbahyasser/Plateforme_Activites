@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Contact from "@/components/Contact.vue";
-import AboutUs from "@/components/AboutUs.vue";
-import SignIn from '@/components/SignIn.vue';
-import SignUp from "@/components/SignUp.vue";
-import WelcomePage from "@/components/WelcomePage.vue";
+import AproposNous from "@/components/AproposNous.vue";
+import ConnexionPage from '@/components/ConnexionPage.vue';
+import InscriptionPage from "@/components/InscriptionPage.vue";
+import PageAccueil from "@/components/PageAccueil.vue";
 import OffersPage from "@/components/OffersPage.vue";
 import OfferDetails from "@/components/OfferDetails.vue";
 import NotificationsPage from "@/components/NotificationsPage.vue";
@@ -21,16 +21,17 @@ import SubmitRequest from "@/components/SubmitRequest.vue";
 import UserChildren from "@/components/UserChildren.vue";
 import ChildPlanning from "@/components/ChildPlanning.vue";
 import ActivityChildren from "@/components/ActivityChildren.vue";
-// import AddChild from "@/components/AddChild.vue";
 import EditChild from "@/components/EditChild.vue";
+import AdminPage from "@/components/ADMIN/AdminPage.vue";
+import AjouterEnfant from "@/components/AjouterEnfant.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
 
-      { path: '/', component: WelcomePage, name: "WelcomePage" },
-    { path: '/signin', component: SignIn, name: "SignIn" },
-    { path: '/signup', component: SignUp, name: "SignUp" },
+      { path: '/', component: PageAccueil, name: "PageAccueil" },
+    { path: '/ConnexionPage', component: ConnexionPage, name: "ConnexionPage" },
+    { path: '/InscriptionPage', component: InscriptionPage, name: "InscriptionPage" },
     { path:'/forgetpassword' , component:ForgetPassword , name:"forgetpassword"},
     { path:'/changepassword/:token' , component:ChangePassword , name:"changepassword"},
     { path: '/offerspage' , component:OffersPage , name:"OffersPage" },
@@ -46,12 +47,14 @@ const router = createRouter({
     { path: '/parentrequests', component: ParentRequests , name: "parentrequests"},
     { path: '/demandeactivity/:id', component: DemandeActivity, name: "demandeactivity"},
     { path: '/contact', component: Contact, name: "Contact" },
-    { path: '/about', component: AboutUs, name: "AboutUs" },
+    { path: '/AproposNous', component: AproposNous, name: "AproposNous" },
     { path: '/userchildren', component: UserChildren, name: "userchildren" },
     { path: '/childplanning/:id', component: ChildPlanning, name: "childplanning" },
-    // { pat: '/addChild' , component:AddChild , name:"addChild"},
     { path:'/editChild/:id' , component:EditChild , name:"editChild"},
-{ path: '/activitychildren/:requestId/activities/:activityId/children', component: ActivityChildren, name: "activityChildren" }  ]
+{ path: '/activitychildren/:requestId/activities/:activityId/children', component: ActivityChildren, name: "activityChildren" } ,
+    { path:'/AdminPage' , component:AdminPage , name:"AdminPage"},
+    { path:'/AjouterEnfant' , component:AjouterEnfant , name:"AjouterEnfant"},
+  ]
 });
 
 export default router;

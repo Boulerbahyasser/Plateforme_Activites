@@ -60,8 +60,9 @@ export default {
       });
     },
     submitChildren() {
-      this.$router.push(`/activitylist/${this.activityId}`);
-    }
+      // this.$router.push(`/activitylist/${this.activityId}`);
+      this.$router.push({ name: 'activitylist', params: { offerId: this.offerId } , query:{ offerTitre :this.offerTitre} });
+      }
   }
 };
 </script>

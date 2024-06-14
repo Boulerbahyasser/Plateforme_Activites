@@ -5,12 +5,12 @@
     <div v-else-if="error" class="error-message">Erreur lors de la récupération de la planification. Veuillez réessayer plus tard.</div>
     <div v-else class="calendar">
       <div class="week">
-        <div v-for="day in planning" :key="day.jour" class="day">
-          <h2>{{ day.jour }}</h2>
+        <div v-for="plan in planning" :key="plan.horaires.jour" class="day">
+          <h2>{{ plan.horaires.jour }}</h2>
           <div class="activity">
-            <p><strong>{{ day.titre }}</strong></p>
-            <p>{{ day.heure_debut }} - {{ day.heure_fin }}</p>
-            <p>Animé par: {{ day.name }}</p>
+            <p><strong>{{ plan.activites.titre}}</strong></p>
+            <p>{{ plan.horaires.heure_debut }} - {{ plan.horaires.heure_fin }}</p>
+            <p>Animé par: {{ plan.users.name }}</p>
           </div>
         </div>
       </div>
@@ -35,10 +35,11 @@ export default {
   methods: {
     async fetchPlanning() {
       const enfantId = this.$route.params.id;
+      alert(enfantId);
       try {
         const response = await axios.get(`http://localhost:8000/api/show/enfant/planning/${enfantId}`);
-        alert(enfantId) ;
         this.planning = response.data;
+        console.log(response.data) ;
         this.loading = false;
       } catch (error) {
         console.error('Erreur lors de la récupération de la planification:', error);

@@ -111,7 +111,7 @@ h2 {
 
 .remise {
   font-size: 1.8rem;
-  color: #e74c3c;
+  color: #010b46;
   font-weight: bold;
   margin-bottom: 20px;
 }

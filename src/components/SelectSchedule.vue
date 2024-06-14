@@ -7,6 +7,7 @@
       <div v-for="(schedule,index) in schedules" :key="schedule.id" class="schedule-card">
         <label :for="`schedule-${schedule.id}`" class="schedule-label">
           <input type="checkbox" :id="`schedule-${schedule.id}`" v-model="selectedSchedules[index]" :value="schedule.id" />
+          <span v-if="selectedSchedules[index]"> {{schedule1 = schedule.eff_max}} </span>
            <div class="schedule-details">
             <span class="schedule-day">{{ schedule.jour }}</span>
             <span class="schedule-time">{{ schedule.heure_debut }} - {{ schedule.heure_fin }}</span>
@@ -38,6 +39,7 @@ export default {
       childId: this.$route.query.childId,
       schedules: [],
       selectedSchedules: [],
+      schedule1:'',
       loading: true,
       error: false
     };
@@ -58,8 +60,10 @@ export default {
       }
     },
     submitSchedules() {
-      if (this.selectedSchedules.length !== 2) {
-        alert('Veuillez sélectionner exactement deux horaires.');
+      alert(this.selectedSchedules[0]) ;
+      alert(this.schedule1) ;
+      if (this.selectedSchedules.length !== 1) {
+        alert('Veuillez sélectionner exactement une horaires.');
         return;
       }
 
@@ -70,8 +74,8 @@ export default {
         activityTitre: this.activityTitre,
         childId: this.childId,
         childName: this.childName,
-        schedule1: this.selectedSchedules[0].jour,
-        schedule2: this.selectedSchedules[1].jour
+        schedule1: this.schedule1
+
       };
 
       // Stocker l'activité sélectionnée dans le localStorage

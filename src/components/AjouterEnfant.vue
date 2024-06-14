@@ -34,7 +34,7 @@
 import axios from '@/axios';
 
 export default {
-  name: 'AddChild',
+  name: 'AjouterEnfant',
   data() {
     return {
       child: {
