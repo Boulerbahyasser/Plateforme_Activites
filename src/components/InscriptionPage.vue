@@ -5,6 +5,7 @@
     </div>
     <div class="sectionDroite">
       <div class="conteneurFormulaire">
+        <img src="@/assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
         <h1>Inscription</h1>
         <form @submit.prevent="submitForm">
 
@@ -42,7 +43,6 @@
 
 <script>
 import axios from 'axios';
-
 
 export default {
   name: 'PageInscription',
@@ -130,15 +130,21 @@ export default {
 
 .conteneurFormulaire {
   width: 80%;
-  max-width: 400px;
+  max-width: 450px;
   background-color: #ffffff;
   padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
+  text-align: center;
+}
+
+.logoPlateforme {
+  width: 150px;
+  margin-bottom: 20px;
+  margin-left: 28%;
 }
 
 h1 {
-  text-align: center;
   color: #333;
   margin-bottom: 20px;
 }

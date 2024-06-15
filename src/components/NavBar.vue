@@ -3,13 +3,13 @@
   <nav class="navbar">
     <div class="navbar-left">
       <router-link to="/" class="navbar-brand">
-        <img src="@/assets/logo_projet.jpg" alt="Logo" class="navbar-logo">
+        <img src="@/assets/logo2.png" alt="Logo" class="navbar-logo">
       </router-link>
     </div>
     <ul class="navbar-center" :class="{ 'show': isMenuOpen }"> <!-- Si isMenuOpen est vrai (true), alors la classe show sera ajoutée à l'élément ul. Si isMenuOpen est faux (false), alors la classe show ne sera pas appliquée. -->
-      <li><router-link to="/">Welcome</router-link></li>
+      <li><router-link to="/">Accueil</router-link></li>
       <li><router-link to="/AproposNous">À propos de nous </router-link></li>
-      <li><router-link to="/how-to-use">How to use</router-link></li>
+      <li><router-link to="/how-to-use">FAQ</router-link></li>
       <li><router-link to="/contact">Contact</router-link></li>
     </ul>
     <div class="navbar-right">
@@ -87,7 +87,7 @@ export default {
 }
 
 .navbar-logo {
-  height: 50px;
+  height: 70px;
   transition: transform 0.3s ease-in-out;
 }
 

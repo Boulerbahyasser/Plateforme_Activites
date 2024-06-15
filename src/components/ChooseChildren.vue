@@ -1,6 +1,7 @@
 <template>
   <div class="choose-children-container">
-    <h1>Choisissez les enfants pour l'activité: {{ activityTitre }}</h1>
+    <h1>Mes enfants</h1>
+    <p class="instruction-text">Choisissez les enfants auxquels vous souhaitez inscrire dans l'activité : <span class="activity-title">{{ activityTitre }}</span></p>
     <div v-if="loading">Chargement des enfants...</div>
     <div v-else-if="error" class="error-message">Erreur lors de la récupération des enfants. Veuillez réessayer plus tard.</div>
     <div v-else>
@@ -14,6 +15,7 @@
     <button @click="submitChildren" class="submit-btn">Terminer</button>
   </div>
 </template>
+
 <script>
 import axios from '@/axios';
 
@@ -36,9 +38,13 @@ export default {
   methods: {
     async fetchChildren() {
       try {
-        alert(this.activityId) ;
         const response = await axios.get(`http://localhost:8000/api/show/parent/enfant/`);
-        this.children = response.data;
+        console.log('Response data:', response.data);
+        if (Array.isArray(response.data) && Array.isArray(response.data[0])) {
+          this.children = response.data[0]; // Assigne le tableau imbriqué
+        } else {
+          this.children = response.data;
+        }
         this.loading = false;
       } catch (error) {
         console.error('Erreur lors de la récupération des enfants:', error);
@@ -60,12 +66,12 @@ export default {
       });
     },
     submitChildren() {
-      // this.$router.push(`/activitylist/${this.activityId}`);
-      this.$router.push({ name: 'activitylist', params: { offerId: this.offerId } , query:{ offerTitre :this.offerTitre} });
-      }
+      this.$router.push({ name: 'activitylist', params: { offerId: this.offerId }, query: { offerTitre: this.offerTitre } });
+    }
   }
 };
 </script>
+
 <style scoped>
 .choose-children-container {
   display: flex;
@@ -76,11 +82,26 @@ export default {
 }
 
 h1 {
+  font-family: 'Baloo Bhaijaan 2', cursive;
   font-size: 2.5rem;
   font-weight: bold;
   color: #0056b3;
   margin-bottom: 20px;
   text-align: center;
+}
+
+.instruction-text {
+  font-size: 1.2rem;
+  color: #4e6267;
+  margin-bottom: 20px;
+  text-align: center; /* Centrer le texte */
+}
+
+.activity-title {
+  font-family: 'Arial', sans-serif;
+  font-size: 1.8rem;
+  color: #355ef6; /* Changer la couleur */
+  margin-bottom: 20px;
 }
 
 .child-card {

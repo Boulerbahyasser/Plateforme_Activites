@@ -1,18 +1,24 @@
 <template>
   <div class="activity-list-container">
     <h1>Activités Disponibles</h1>
+    <p class="instruction-text">Choisissez les activités auxquelles vous souhaitez inscrire vos enfants. Cliquez sur 'Choisir les enfants' pour sélectionner les enfants pour une activité spécifique.</p>
     <div v-if="loading" class="loader">Chargement des activités...</div>
     <div v-else-if="error" class="error-message">Erreur lors de la récupération des activités. Veuillez réessayer plus tard.</div>
     <div v-else>
       <div v-for="activity in activities" :key="activity.id" class="activity-item">
-<img :src="`http://localhost:8000/storage/${activity.image_pub || '@/assets/child.png'}`" alt="Image de l'activité" class="activity-image">
+        <div class="activity-image-container">
+          <img :src="`http://localhost:8000/storage/activites_img/${activity.image_pub}`" alt="Image de l'activité" class="activity-image">
+        </div>
         <div class="activity-details">
           <h3>{{ activity.titre }}</h3>
           <p>{{ activity.description }}</p>
-          <p><strong>objectifs :</strong> {{ activity.objectifs }}</p>
+          <p><strong>Objectifs :</strong> {{ activity.objectifs }}</p>
           <p><strong>Domaine :</strong> {{ activity.domaine }}</p>
           <p><strong>Tarif :</strong> {{ activity.tarif }} €</p>
-          <button @click="toggleDetails(activity.id)" class="show-more-btn">Show More</button>
+          <div class="action-buttons">
+            <button @click="toggleDetails(activity.id)" class="show-more-btn">Show More</button>
+            <button @click="goToActivityDetails(activity)" class="choose-btn">Choisir les enfants</button>
+          </div>
           <div v-if="activity.showDetails" class="additional-details">
             <p><strong>Âge Minimum :</strong> {{ activity.age_min }}</p>
             <p><strong>Âge Maximum :</strong> {{ activity.age_max }}</p>
@@ -22,14 +28,12 @@
             <p><strong>Vidéo :</strong> <a :href="activity.lien_youtube" target="_blank">Voir la vidéo</a></p>
           </div>
         </div>
-        <div class="action-buttons">
-          <button @click="goToActivityDetails(activity)" class="choose-btn">Choisir les enfants</button>
-        </div>
       </div>
     </div>
     <button @click="makeRequest" class="request-btn">Envoyer la demande</button>
   </div>
 </template>
+
 <script>
 import axios from '@/axios';
 
@@ -48,9 +52,9 @@ export default {
   methods: {
     async fetchActivities() {
       const offerId = this.$route.params.offerId;
-      const offerTitre = this.$route.query.offerTitre ;
+      const offerTitre = this.$route.query.offerTitre;
       try {
-        alert(offerTitre) ;
+        alert(offerTitre);
         const response = await axios.get(`http://localhost:8000/api/show/offer/activities/all/${offerId}`);
         this.activities = response.data.map(activity => ({ ...activity, showDetails: false }));
         this.loading = false;
@@ -73,7 +77,7 @@ export default {
           activityId: activity.id,
           activityTitre: activity.titre,
           offerId: this.$route.params.offerId,
-          offerTitre :  this.$route.query.offerTitre
+          offerTitre: this.$route.query.offerTitre
         }
       });
     },
@@ -83,6 +87,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .activity-list-container {
   padding: 20px;
@@ -93,8 +98,15 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
+  color: #0056b3;
   font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight:bold ;
+}
+
+.instruction-text {
+  font-size: 1.2rem;
+  color: #4e6267;
   margin-bottom: 20px;
 }
 
@@ -110,7 +122,6 @@ h1 {
 
 .activity-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
   padding: 20px;
@@ -125,18 +136,21 @@ h1 {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
+.activity-image-container {
+  flex: 0 0 30%;
+  margin-right: 20px;
+}
+
 .activity-image {
-  width: 150px;
-  height: 150px;
-  margin-bottom: 20px;
+  width: 100%;
+  height: auto;
   border-radius: 10px;
   object-fit: cover;
 }
 
 .activity-details {
+  flex: 1;
   text-align: left;
-  width: 100%;
-  padding: 10px;
 }
 
 .activity-details h3 {
@@ -161,7 +175,7 @@ h1 {
 
 .action-buttons {
   display: flex;
-  justify-content: center;
+  gap: 10px;
   margin-top: 10px;
 }
 
@@ -170,7 +184,6 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 5px;
   font-size: 1rem;
   transition: background-color 0.3s, box-shadow 0.3s;
 }

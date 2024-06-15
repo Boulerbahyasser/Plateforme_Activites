@@ -34,27 +34,50 @@ const router = createRouter({
     { path: '/InscriptionPage', component: InscriptionPage, name: "InscriptionPage" },
     { path:'/forgetpassword' , component:ForgetPassword , name:"forgetpassword"},
     { path:'/changepassword/:token' , component:ChangePassword , name:"changepassword"},
-    { path: '/offerspage' , component:OffersPage , name:"OffersPage" },
-    { path: '/offerdetails/:id' , component:OfferDetails , name:"offerdetails"},
-    { path:'/activitylist/:offerId' , component:ActivityList , name:"activitylist"},
-    { path:'/choosechildren' , component:ChooseChildren , name:"choosechildren"},
-    { path:'/selectshedule/:activityId' , component:SelectSchedule , name:"selectshedule"},
-    { path: '/submitrequest' , component:SubmitRequest , name:"submitrequest"},
-    { path:'/notificationpage' , component:NotificationsPage , name:"notificationpage"},
+    { path: '/offerspage' , component:OffersPage , name:"OffersPage" ,  meta: { requiresAuth: true , roles: ['parent'] } },
+    { path: '/offerdetails/:id' , component:OfferDetails , name:"offerdetails" , meta: { requiresAuth: true , roles: ['parent'] }},
+    { path:'/activitylist/:offerId' , component:ActivityList , name:"activitylist"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path:'/choosechildren' , component:ChooseChildren , name:"choosechildren"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path:'/selectshedule/:activityId' , component:SelectSchedule , name:"selectshedule"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path: '/submitrequest' , component:SubmitRequest , name:"submitrequest"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path:'/notificationpage' , component:NotificationsPage , name:"notificationpage" },
     { path:'/notificationhistory' , component:NotificationHistory , name:"notificationhistory"},
-    { path:'/userprofile' , component:UserProfile , name:"userprofile"} ,
+    { path:'/userprofile' , component:UserProfile , name:"userprofile" } ,
     { path:'/unauthorized' , component:UnaUthorized ,name:"unauthorized"},
-    { path: '/parentrequests', component: ParentRequests , name: "parentrequests"},
-    { path: '/demandeactivity/:id', component: DemandeActivity, name: "demandeactivity"},
+    { path: '/parentrequests', component: ParentRequests , name: "parentrequests"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path: '/demandeactivity/:id', component: DemandeActivity, name: "demandeactivity"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
     { path: '/contact', component: Contact, name: "Contact" },
     { path: '/AproposNous', component: AproposNous, name: "AproposNous" },
-    { path: '/userchildren', component: UserChildren, name: "userchildren" },
-    { path: '/childplanning/:id', component: ChildPlanning, name: "childplanning" },
-    { path:'/editChild/:id' , component:EditChild , name:"editChild"},
-{ path: '/activitychildren/:requestId/activities/:activityId/children', component: ActivityChildren, name: "activityChildren" } ,
+    { path: '/userchildren', component: UserChildren, name: "userchildren"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path: '/childplanning/:id', component: ChildPlanning, name: "childplanning"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path:'/editChild/:id' , component:EditChild , name:"editChild"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+{ path: '/activitychildren/:requestId/activities/:activityId/children', component: ActivityChildren, name: "activityChildren"  ,  meta: { requiresAuth: true , roles: ['parent'] } } ,
     { path:'/AdminPage' , component:AdminPage , name:"AdminPage"},
-    { path:'/AjouterEnfant' , component:AjouterEnfant , name:"AjouterEnfant"},
+    { path:'/AjouterEnfant' , component:AjouterEnfant , name:"AjouterEnfant"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
   ]
+});
+
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('auth_token'); // Récupérer le token JWT stocké
+  const role = localStorage.getItem('user_role'); // Récupérer le rôle de l'utilisateur stocké
+
+  // On Vérifie si la route nécessite une authentification
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+
+    if (!token) {
+      next('/ConnexionPage');
+    } else {
+      // Vérifiant si l'utilisateur a les permissions nécessaires
+      if (to.matched.some(record => record.meta.roles && !record.meta.roles.includes(role))) {
+        next('/unauthorized');
+      } else {
+        next();
+      }
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

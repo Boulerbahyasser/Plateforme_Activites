@@ -7,7 +7,7 @@
     <div v-else>
       <div v-for="child in children" :key="child.id" class="child-card">
         <div class="child-photo">
-          <img :src="child.photo || require('@/assets/child.png')" alt="Photo de l'enfant">
+          <img :src="`http://localhost:8000/storage/enfants_img/${child.photo}`" alt="Photo de l'enfant">
         </div>
         <div class="child-details">
           <h3>{{ child.nom }} {{ child.prenom }}</h3>
@@ -22,7 +22,6 @@
     </div>
   </div>
 </template>
-
 
 <script>
 import axios from '@/axios';
@@ -43,7 +42,12 @@ export default {
     async fetchChildren() {
       try {
         const response = await axios.get('http://localhost:8000/api/show/parent/enfant/');
-        this.children = response.data;
+        console.log('Response data:', response.data);
+        if (Array.isArray(response.data) && Array.isArray(response.data[0])) {
+          this.children = response.data[0]; // Assigne le tableau imbriqué
+        } else {
+          this.children = response.data;
+        }
         this.loading = false;
       } catch (error) {
         console.error('Erreur lors de la récupération des enfants:', error);
@@ -63,7 +67,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .user-children-container {

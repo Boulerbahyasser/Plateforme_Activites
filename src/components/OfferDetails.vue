@@ -10,8 +10,8 @@
           <h1>{{ offer.titre }}</h1>
           <p class="offer-description">{{ offer.description }}</p>
           <div class="date-info">
-            <p><strong>Début:</strong> {{ offer.date_debut }}</p>
-            <p><strong>Fin:</strong> {{ offer.date_fin }}</p>
+            <p><strong>Début:</strong> {{ formatDate(offer.date_debut) }}</p>
+            <p><strong>Fin:</strong> {{ formatDate(offer.date_fin) }}</p>
           </div>
           <div class="remise-container">
             <p class="remise-label">La remise est :</p>
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="button-container">
-          <button @click="GoToActivities">Choisir les Activités</button>
+          <button @click="GoToActivities">Creer une demande</button>
         </div>
       </div>
     </div>
@@ -28,6 +28,7 @@
     <div v-else class="error-message">Erreur lors de la récupération des détails de l'offre. Veuillez réessayer plus tard.</div>
   </div>
 </template>
+
 <script>
 import axios from 'axios';
 import UtilisateurParent from "@/components/UtilisateurParent.vue";
@@ -59,12 +60,16 @@ export default {
         this.error = true;
       }
     },
+    formatDate(dateString) {
+      return dateString.split('T')[0];
+    },
     GoToActivities() {
-      this.$router.push({ name: 'activitylist', params: { offerId: this.offer.id } , query:{ offerTitre :this.offer.titre} });
+      this.$router.push({ name: 'activitylist', params: { offerId: this.offer.id }, query: { offerTitre: this.offer.titre } });
     }
   }
 };
 </script>
+
 <style scoped>
 .offer-details-container {
   display: flex;
@@ -101,7 +106,6 @@ h1 {
   width: 100%;
   height: 455px;
   object-fit: cover ;
-
 }
 
 .offer-info {
