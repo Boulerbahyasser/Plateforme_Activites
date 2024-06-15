@@ -34,6 +34,7 @@ class AdminOffreController extends Controller
             'date_debut' => 'required|date',
             'date_fin' => 'required|date|after:Date_Debut',
             'description' => 'required',
+            'domaine' => 'required'
         ]);
 
         if($request->has('remise')) $formFields['remise'] = $request->remise;
