@@ -22,7 +22,7 @@ trait ValidateTrait
 //            'role'=>'string',
             'name'=>'required|string|max:250',
             'email'=>'required|email|unique:users',
-            'password'=>'required|string',
+            'password'=>'required|string|confirmed',
             'domaine'=>$this->rul,
 
         ];

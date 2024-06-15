@@ -3,8 +3,10 @@
 use App\Http\Controllers\AdminActiviteeController;
 use App\Http\Controllers\AdminActiviteeOffreController;
 use App\Http\Controllers\AdminDemandeController;
+use App\Http\Controllers\AdminHoraireController;
 use App\Http\Controllers\AdminOffreController;
-use App\Http\Controllers\AdminParentController;
+use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\AnimatorController;
 use App\Http\Controllers\Authentication\EmailVerificationController;
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\LogoutController;
@@ -50,8 +52,6 @@ Route::middleware(['auth:sanctum'])->group(function (){
         ->name('Myprofile');
     Route::post('logout', [LogoutController::class,'logout'])->name('logout');
     Route::get('/show/offers/',[showController::class,'showOffers']);
-    Route::get('/show/parent/enfant/',[showController::class,'showEnfantOfParent']);
-    Route::get('/show/notification/parent/top/',[ShowController::class,'showTopParentNotifications']);
     Route::get('/show/notification/parent/remaining/',[ShowController::class,'showRemainingParentNotifications']);
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
 
@@ -59,15 +59,19 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('/show/demandes/parent/',[showController::class, 'showDemandesOfParent']);
     Route::get('/show/parent/demande/activities/{demande_id}',[ShowController::class,'showActivitiesInDemandeOfParent']);
     Route::get('/show/parent/demande/activity/enfants/{demande_id}/{activite_offre_id}',[ShowController::class,'showEnfantInActivityInDemandeOfParent']);
+    Route::get('/show/notification/parent/top/',[ShowController::class,'showTopParentNotifications']);
 
     Route::delete('/delete/notification/{notification}',[NotificationController::class,'deleteNotification']);
+    Route::get('/show/parent/enfant/',[showController::class,'showEnfantOfParent']);
 
 
 
-    Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
     Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotification']);
 
 });
+
+Route::get('show/offers/filtered/{domaine}',[ShowController::class,'showOffersFiltered']);
+Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
 Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
 
 //show
@@ -90,7 +94,16 @@ Route::get('/show/offer/activity/horaires/{activite_id}',[showController::class,
 
 Route::get('/show/offer/activity/enfants/{activite_id}',[showController::class,'showEnfantInActivity']);
 
-//notifications
+
+Route::get('/show/animateurs/',[ShowController::class,'showAnimateurs']);
+Route::get('/show/animateur/{animateur}',[ShowController::class,'showAnimateur']);
+Route::get('/show/all/horaires/animateur/{anim_id?}',[ShowController::class,'showAllHoraireOfAnimateur']);
+Route::get('/show/busy/horaires/animateur/{anim_id?}',[ShowController::class,'showBusyHoraireOfAnimateurs']);
+Route::get('/show/available/horaires/animateur/{anim_id?}',[ShowController::class,'showAvailableHoraireOfAnimateurs']);
+Route::get('/show/new/horaires/animateur/{anim_id}',[ShowController::class,'showHoraireForAnimToAdd']);
+
+//anim
+Route::post('/add/available/horaires/anim/',[AnimatorController::class,'addAvailableHour']);
 
 
 //AdminActiviteeOffreController
@@ -122,8 +135,12 @@ Route::post('/create/activity/',[AdminActiviteeController::class,'createActivity
 Route::put('/update/activity/{activity}',[AdminActiviteeController::class,'updateActivity']);
 
 Route::delete('/delete/activity/{activity}',[AdminActiviteeController::class,'destroyActivity']);
-Route::post('/create/demande/',[ParentDemandeController::class,'storeDemande']);
+Route::post('/create/demande/{pack?}',[ParentDemandeController::class,'storeDemande']);
 
 
 
-Route::delete('/delete/parent/by/admin/{parent}',[AdminParentController::class,'deleteParent']);
+Route::delete('/delete/parent/by/admin/{parent}',[AdminUserController::class,'deleteParent']);
+Route::delete('/delete/animateur/by/admin/{animateur}',[AdminUserController::class,'deleteAnimateur']);
+
+
+Route::post('/create/horaire/',[AdminHoraireController::class,'createHoraire']);
