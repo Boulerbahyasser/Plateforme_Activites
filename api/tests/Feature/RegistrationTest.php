@@ -22,7 +22,7 @@ class RegistrationTest extends TestCase
 
         // Simule les données de la requête.
         $requestData = [
-            'name' => 'Test Parent',
+            'name' => 'Said Idrissi',
             'email' => 'testparent@example.com',
             'password' => 'password123',
             'password_confirmation' => 'password123',
@@ -40,6 +40,7 @@ class RegistrationTest extends TestCase
 
         // Vérifie que l'utilisateur a été créé.
         $this->assertDatabaseHas('users', [
+            'name' => 'Said Idrissi',
             'email' => 'testparent@example.com',
             'role' => 'parent',
         ]);
@@ -61,6 +62,9 @@ class RegistrationTest extends TestCase
 
     public function testRegisterParentInvalid()
     {
+        // Simule l'envoie d'un email
+        Mail::fake();
+        
         // Simule des données de requête invalides.
         $requestData = [
             'name' => 'Soukaina Slimani',
@@ -74,5 +78,10 @@ class RegistrationTest extends TestCase
 
         // Vérifie le statut et la structure de la réponse.
         $response->assertStatus(422);  
+        $this->assertDatabaseMissing('users', [
+            'name' => 'Soukaina Slimani',
+            'email' => 'invalid-email@gmail.com',
+            'role' => 'parent',
+        ]);
     }
 }
