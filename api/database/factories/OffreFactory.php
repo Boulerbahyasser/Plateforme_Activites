@@ -17,6 +17,7 @@ class OffreFactory extends Factory
             'date_debut' => $this->faker->date(),
             'date_fin' => $this->faker->date(),
             'description' => $this->faker->paragraph,
+            'domaine' => $this->faker->word,
             'remise' => $this->faker->randomFloat(2, 0, 100),
         ];
     }

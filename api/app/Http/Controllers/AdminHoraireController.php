@@ -29,4 +29,5 @@ class AdminHoraireController extends Controller
         $horaire->delete();
         return response()->json(['message'=>'the horaire has been deleted'],200);
     }
+
 }

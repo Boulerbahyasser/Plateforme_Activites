@@ -14,8 +14,9 @@ class AdminOffreController extends Controller
         $formFields = $request->validate([
             'titre' => 'required',
             'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after:Date_Debut',
+            'date_fin' => 'required|date|after:date_debut',
             'description' => 'required',
+            'domaine' => 'required'
         ]);
         $user_id = auth()->id();
         $admin = Administrateur::where('user_id',$user_id)->first();
@@ -31,10 +32,10 @@ class AdminOffreController extends Controller
         $formFields = $request->validate([
             'titre' => 'required',
             'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after:Date_Debut',
+            'date_fin' => 'required|date|after:date_debut',
             'description' => 'required',
+            'domaine' => 'required'
         ]);
-
         if($request->has('remise')) $formFields['remise'] = $request->remise;
         $offer->update($formFields);
         return response()->json(['message'=>'the update was successful'],200);

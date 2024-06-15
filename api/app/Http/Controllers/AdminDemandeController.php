@@ -33,16 +33,16 @@ class AdminDemandeController extends Controller{
         if($request->etat == 'accepte')$msg = "the request is well accepted";
         else {
 
-            $horaire1 = explode(',',$demande->horaire1);
-            $horaire2 = explode(',',$demande->horaire2);
-            $horaire1_id = Horaire::where('jour',$horaire1[0])->where('heure_debut',$horaire1[1])
-                ->where('horaires.heure_fin',$horaire1[2])->first()->id;
-            $horaire2_id = Horaire::where('jour',$horaire2[0])->where('heure_debut',$horaire2[1])
-                ->where('horaires.heure_fin',$horaire2[2])->first()->id;
-            $hda1 = Hda::find($horaire1_id);
-            $hda2 = Hda::find($horaire2_id);
-            $hda1->update(['nbr_place_restant'=>$hda1->nbr_place_restant+1]);
-            $hda2->update(['nbr_place_restant'=>$hda2->nbr_place_restant+1]);
+            $horaire = explode(',',$demande->horaire);
+            //$horaire2 = explode(',',$demande->horaire2);
+            $horaire_id = Horaire::where('jour',$horaire[0])->where('heure_debut',$horaire[1])
+                ->where('horaires.heure_fin',$horaire[2])->first()->id;
+//            $horaire2_id = Horaire::where('jour',$horaire2[0])->where('heure_debut',$horaire2[1])
+//                ->where('horaires.heure_fin',$horaire2[2])->first()->id;
+            $hda = Hda::find($horaire_id);
+//            $hda2 = Hda::find($horaire2_id);
+            $hda->update(['nbr_place_restant'=>$hda->nbr_place_restant+1]);
+//            $hda2->update(['nbr_place_restant'=>$hda2->nbr_place_restant+1]);
             $msg = "the request is well denied";
         }
         $parent_id  = Enfant::find($enfant_id)->father_id;

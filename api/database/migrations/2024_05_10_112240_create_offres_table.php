@@ -18,6 +18,7 @@ return new class extends Migration
             $table->date('date_debut'); //add this
             $table->date('date_fin');
             $table->text('description');
+            $table->string('domaine');
             $table->decimal('remise', 10, 2);
 
             // Clé étrangère vers la table 'administrateurs'
