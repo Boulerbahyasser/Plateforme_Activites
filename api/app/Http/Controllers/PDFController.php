@@ -13,7 +13,6 @@ class PDFController extends Controller
         $dompdf = new Dompdf();
         $totale_ht = number_format($totale_ht, 2, ',', ' ');
         $totale_ttc = number_format($totale_ttc, 2, ',', ' ');
-
         $html = '
     <style>
         body {
