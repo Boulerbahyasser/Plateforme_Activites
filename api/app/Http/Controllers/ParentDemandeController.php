@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ActiviteOffre;
 use App\Models\Administrateur;
 use App\Models\Demande;
+use App\Models\Devis;
 use App\Models\DemandeInscription;
 use App\Models\Hda;
 use App\Models\Horaire;
@@ -65,19 +66,20 @@ class ParentDemandeController extends Controller
         ]);
 
     }
-
-public function UpdateDevis(Request $request,Devis $devis){
-    $msg = "votre devis est accepte";
-    $devis->update([
-        'statut'=>$request->statut
-    ]);
-    if($request->has('motif')){
-        $msg = "votre devis est refuse";
+    public function UpdateDevis(Request $request,Devis $devis){
+        $msg = "votre devis est accepte";
         $devis->update([
-            'motif'=>$request->motif
+            'statut'=>$request->statut
         ]);
+        if($request->has('motif')){
+            $msg = "votre devis est refuse";
+            $devis->update([
+                'motif'=>$request->motif
+            ]);
+        }
+        return response()->json(['message'=>$msg,200]);
     }
-    return response()->json(['message'=>$msg,200]);
-}
+
+
 }
 

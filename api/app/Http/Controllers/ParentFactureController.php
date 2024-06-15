@@ -25,18 +25,12 @@ class ParentFactureController extends Controller
             ->where('devis.statut', 'accepte')
             ->select('devis.id','totale_ht','totale_ttc')
             ->get();
-        // $enfant=Enfant::where('parent_id',$parent->id);
-        // $demande_ins=DemandeInscription::where('enfant_id',$enfant->id);
-        // $demande=Demande::where('id',$demande_ins->demande_id);
-        // $devises=Devis::where('demande_id',$demande->id);
         $tot_ht = 0;
         $tot_ttc = 0;
         foreach ($lesDevis as $devis) {
             $tot_ht += $devis->totale_ht;
             $tot_ttc += $devis->totale_ttc;
-        }
-
-
+                    }
         $facture = Facture::create(['date' => now(),
             'total_ht' => $tot_ht,
             'total_ttc' => $tot_ttc]);
@@ -44,9 +38,8 @@ class ParentFactureController extends Controller
             $devis_row = Devis::find($devis->id);
             $devis_row->update(['etat'=>'paye',
                 'facture_id'=>$facture->id]);
-        }
+                     }
         AdminPlanningController::insertEnfantInPlanning($lesDevis);
-
         return response()->json(['message'=>'the facture has been created'],201);
     }
 }
