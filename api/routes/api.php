@@ -51,7 +51,6 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('my-profile', [LoginController::class,'AuthenticatedProflie'])
         ->name('Myprofile');
     Route::post('logout', [LogoutController::class,'logout'])->name('logout');
-    Route::get('/show/offers/',[showController::class,'showOffers']);
     Route::get('/show/notification/parent/remaining/',[ShowController::class,'showRemainingParentNotifications']);
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
 
@@ -69,6 +68,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotification']);
 
 });
+Route::get('/show/offers/',[showController::class,'showOffers']);
 
 Route::get('/show/offers/filtered/{domaine}',[ShowController::class,'showOffersFiltered']);
 Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
@@ -77,7 +77,7 @@ Route::get('/show/pack/',[ShowController::class,'showPacks']);
 //show
 Route::get('/show/offers/top/',[showController::class,'showTopOffers']);
 Route::get('/show/offers/remaining/',[showController::class,'showRemainingOffers']);
-Route::get('/show/offer/{offre}',[showController::class,'showOffer']);
+Route::get('/show/offer/{offer}',[showController::class,'showOffer']);
 
 
 Route::get('/show/activities/',[showController::class,'showActivities']);

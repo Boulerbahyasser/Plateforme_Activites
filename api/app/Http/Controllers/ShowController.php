@@ -30,11 +30,23 @@ class ShowController extends Controller
     // tested
     // we dont need to filter the offers according to the id_admin
     public function showOffers(){
-        return response()->json(Offre::latest()->get(), 200);
+        $offers = Offre::latest()->get();
+        foreach ($offers as $offer){
+            $activitie = ActiviteOffre::join('activites', 'activites.id', 'activite_offres.activite_id')
+                ->select('image_pub')
+                ->where('offre_id', $offer->id)->first();
+            $offer['image'] = $activitie->image_pub??null;
+        }
+
+        return response()->json($offers, 200);
     }
 
-    public function showOffer(Offre $offre){
-        return response()->json($offre, 200);
+    public function showOffer(Offre $offer){
+        $activitie = ActiviteOffre::join('activites', 'activites.id', 'activite_offres.activite_id')
+            ->select('image_pub')
+            ->where('offre_id', $offer->id)->first();
+        $offer['image'] = $activitie->image_pub??null;
+        return response()->json($offer, 200);
     }
 
 // 1/2 tested
@@ -55,17 +67,32 @@ class ShowController extends Controller
 //tested
     public function showTopOffers()
     {
-        return response()->json(Offre::orderBy('remise', 'desc')->limit(3)->get(), 200);
+        $offers = Offre::orderBy('remise', 'desc')->limit(3)->get();
+        foreach ($offers as $offer){
+            $activitie = ActiviteOffre::join('activites', 'activites.id', 'activite_offres.activite_id')
+                ->select('image_pub')
+                ->where('offre_id', $offer->id)->first();
+            $offer['image'] = $activitie->image_pub??null;
+        }
+
+        return response()->json($offers, 200);
     }
 
     public function showRemainingOffers()
     {
-        return response()->json(Offre::orderBy('remise', 'desc')->skip(3)->take(PHP_INT_MAX)->get(), 200);
+        $offers = Offre::orderBy('remise', 'desc')->skip(3)->get();
+        foreach ($offers as $offer){
+            $activitie = ActiviteOffre::join('activites', 'activites.id', 'activite_offres.activite_id')
+                ->select('image_pub')
+                ->where('offre_id', $offer->id)->first();
+            $offer['image'] = $activitie->image_pub??null;
+        }
+
+        return response()->json($offers, 200);
     }
 
     public function showActivitiesOfferInOffer(Offre $offer)
     {
-
         $activities = ActiviteOffre::where('offre_id', $offer->id)->latest()->get();
         return response()->json($activities, 200);
     }

@@ -36,7 +36,6 @@ class AdminOffreController extends Controller
             'description' => 'required',
             'domaine' => 'required'
         ]);
-
         if($request->has('remise')) $formFields['remise'] = $request->remise;
         $offer->update($formFields);
         return response()->json(['message'=>'the update was successful'],200);
