@@ -24,26 +24,21 @@ use Illuminate\Support\Facades\Auth;
 class ShowController extends Controller
 {
     //tested
-    public function showActivities()
-    {
-
+    public function showActivities(){
         return response()->json(Activite::latest()->get(), 200);
     }
     // tested
     // we dont need to filter the offers according to the id_admin
-    public function showOffers()
-    {
+    public function showOffers(){
         return response()->json(Offre::latest()->get(), 200);
     }
 
-    public function showOffer(Offre $offre)
-    {
+    public function showOffer(Offre $offre){
         return response()->json($offre, 200);
     }
 
 // 1/2 tested
-    public function showDemandesOfAdmin()
-    {
+    public function showDemandesOfAdmin(){
         $user_id = auth()->id();
         $admin = Administrateur::where('user_id', $user_id)->first();
         return response()->json(
@@ -142,7 +137,6 @@ class ShowController extends Controller
         $notifications = Notification::where('user_id', $user_id)
             ->orderBy('date', 'desc')
             ->skip(7)
-            ->take(PHP_INT_MAX)
             ->get();
         return response()->json($notifications, 200);
     }

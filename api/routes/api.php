@@ -70,10 +70,10 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
 });
 
-Route::get('show/offers/filtered/{domaine}',[ShowController::class,'showOffersFiltered']);
+Route::get('/show/offers/filtered/{domaine}',[ShowController::class,'showOffersFiltered']);
 Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
 Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
-
+Route::get('/show/pack/',[ShowController::class,'showPacks']);
 //show
 Route::get('/show/offers/top/',[showController::class,'showTopOffers']);
 Route::get('/show/offers/remaining/',[showController::class,'showRemainingOffers']);

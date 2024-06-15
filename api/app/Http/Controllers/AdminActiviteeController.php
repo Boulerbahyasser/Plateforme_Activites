@@ -16,8 +16,8 @@ class AdminActiviteeController extends Controller
             'objectifs' => 'required',
             'domaine' =>'required'
         ]);
-        if($request->hasFile('IMAGE_PUB')){
-            $formFields['IMAGE_PUB'] = $request->file('IMAGE_PUB')->store('IMAGE_PUBs','public');
+        if($request->hasFile('image_pub')){
+            $formFields['image_pub'] = $request->file('image_pub')->store('image_pubs','public');
         }
         Activite::create($formFields);
         return response()->json(['message'=>'the insertion was successful'],201);
