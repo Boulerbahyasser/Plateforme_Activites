@@ -31,7 +31,6 @@ class RegistrationController extends Controller
             $newUser = User::create($registerdata);
             Father::create(['user_id' => $newUser->id]);
             Mail::to($newUser->email)->send(new SendEmails($newUser));
-
             return response()->json([
                 'status' => 200,
                 'message' => 'verify your email ,link sent to your inbox'
@@ -42,7 +41,7 @@ class RegistrationController extends Controller
 
                 'message' => 'sorry something went wrong',
                 'erros' => $e->getMessage()
-            ], 500);
+            ], );
         }
     }
 

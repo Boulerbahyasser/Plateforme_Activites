@@ -31,32 +31,61 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('register-parent', [RegistrationController::class,'RegisterParent'])
-    ->name('Enregistrement');
+    ->name('Enregistrement')
+    ->middleware('recaptcha');
+
 Route::get('verify-email/{token}', [EmailVerificationController::class,'verifyemail'])
     ->name('verify');
 
-
 Route::post('login', [LoginController::class,'login'])->name('login');
-Route::post('forget-password', [ResetPasswordCntroller::class,'RessetPasswordEmail'])->name('forgetPassword');
-Route::post('reset-password/{token}', [ResetPasswordCntroller::class,'ResetPassword'])->name('restpassword');
+Route::post('forget-password', [ResetPasswordCntroller::class,'RessetPasswordEmail'])
+    ->name('forgetPassword');
+Route::post('reset-password/{token}', [ResetPasswordCntroller::class,'ResetPassword'])
+    ->name('restpassword');
+
+
 
 // ici tous les choses isi l'authetification est nececiare
-Route::middleware(['auth:sanctum'])->group(function (){
-    Route::post('register-admin', [RegistrationController::class,'RegisterAdmin'])
-        ->name('AjouterAdmin')
-        ->middleware('Check_Admin_User');// administarateur si ill va ajouter un sous admin
-    Route::post('register-animateur', [RegistrationController::class,'RegisterAnimateur'])
-        ->name('AjouterAnimateur')
-        ->middleware('Check_Admin_User');
-    Route::get('my-profile', [LoginController::class,'AuthenticatedProflie'])
-        ->name('Myprofile');
+Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
+    Route::get('my-profile', [LoginController::class,'AuthenticatedProflie'])->name('Myprofile');
 
+// AdminController:
+    // admin
+    Route::post('register-admin', [RegistrationController::class,'RegisterAdmin'])->name('AjouterAdmin')->middleware('Check_Admin_User');// administarateur si ill va ajouter un sous admin
+    Route::post('register-animateur', [RegistrationController::class,'RegisterAnimateur'])->name('AjouterAnimateur')->middleware('Check_Admin_User');
+    Route::delete('/delete/parent/by/admin/{parent}',[AdminUserController::class,'deleteParent']);
+    Route::delete('/delete/animateur/by/admin/{animateur}',[AdminUserController::class,'deleteAnimateur']);
+
+    //offers managed by admin
+    Route::post('/create/offer/',[AdminOffreController::class,'createOffer']);
+    Route::put('/update/offer/{offer}/',[AdminOffreController::class,'updateOffer']);
+    Route::delete('/delete/offer/{offer}',[AdminOffreController::class,'destroyOffer']);
+
+
+    // activities ceated managed by admin
+    Route::post('/create/activity/',[AdminActiviteeController::class,'createActivity']);
+    Route::put('/update/activity/{activity}',[AdminActiviteeController::class,'updateActivity']);
+    Route::delete('/delete/activity/{activity}',[AdminActiviteeController::class,'destroyActivity']);
+
+
+    // offers activities seted by admin
+    Route::post('/add/offer/activity/{offer}/{activity}',[AdminActiviteeOffreController::class,'addActivityToOffer']);
+    Route::put('/update/offer/activity/{activityOffer}',[AdminActiviteeOffreController::class,'updateActivityInOffer']);
+    Route::delete('/delete/offer/activity/{activityOffer}',[AdminActiviteeOffreController::class,'destroyActivity']);
+    Route::post('/create/horaire/',[AdminHoraireController::class,'createHoraire']);
+
+
+
+    // parent
     Route::post('logout', [LogoutController::class,'logout'])->name('logout');
     Route::get('/show/parent/enfant/',[showController::class,'showEnfantOfParent']);
+    Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
     Route::get('/show/notification/parent/top/',[ShowController::class,'showTopParentNotifications']);
     Route::get('/show/notification/parent/remaining/',[ShowController::class,'showRemainingParentNotifications']);
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
     Route::get('/show/offers/',[showController::class,'showOffers']);
+
+
 
     // show demandes of parent
     Route::get('/show/demandes/parent/',[showController::class, 'showDemandesOfParent']);
@@ -64,14 +93,29 @@ Route::middleware(['auth:sanctum'])->group(function (){
     Route::get('/show/parent/demande/activity/enfants/{demande_id}/{activite_offre_id}',[ShowController::class,'showEnfantInActivityInDemandeOfParent']);
     Route::delete('/delete/notification/{notification}',[NotificationController::class,'deleteNotification']);
     Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotification']);
+    Route::post('/create/demande/',[ParentDemandeController::class,'storeDemande']);
+    Route::put('/update/demande/inscription/{demande_id}/{activite_offre_id}/{enfant_id}',[AdminDemandeController::class,'gererDemande']);
+    Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
 
+//show
+    Route::get('/show/offers/top/',[showController::class,'showTopOffers']);
+    Route::get('/show/offers/remaining/',[showController::class,'showRemainingOffers']);
+    Route::get('/show/offer/{offre}',[showController::class,'showOffer']);
+    Route::get('/show/activities/',[showController::class,'showActivities']);
+    Route::get('/show/offer/activities/{offer}',[showController::class, 'showActivitiesInOffer']);
+    Route::get('/show/offer/activities/more/{offer}',[showController::class, 'showActivitiesOfferInOffer']);
+    Route::get('/show/offer/activities/all/{offer}',[showController::class,'showActivitiesInOfferAllInfos']);
+    Route::get('/show/offer/activity/horaires/{activite_id}',[showController::class,'showHoraireInActivity']);
+    Route::get('/show/offer/activity/enfants/{activite_id}',[showController::class,'showEnfantInActivity']);
 
-
-
-
-
-
-
+//animateurs
+    Route::get('/show/animateurs/',[ShowController::class,'showAnimateurs']);
+    Route::get('/show/animateur/{animateur}',[ShowController::class,'showAnimateur']);
+    Route::get('/show/all/horaires/animateur/{anim_id?}',[ShowController::class,'showAllHoraireOfAnimateur']);
+    Route::get('/show/busy/horaires/animateur/{anim_id?}',[ShowController::class,'showBusyHoraireOfAnimateurs']);
+    Route::get('/show/available/horaires/animateur/{anim_id?}',[ShowController::class,'showAvailableHoraireOfAnimateurs']);
+    Route::get('/show/new/horaires/animateur/{anim_id}',[ShowController::class,'showHoraireForAnimToAdd']);
+    Route::post('/add/available/horaires/anim/',[AnimatorController::class,'addAvailableHour']);
 
 });
 
@@ -80,76 +124,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
 
 
-Route::get('/show/enfant/planning/{enfant_id}',[ShowController::class,'showPlaningEnfant']);
-Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
-
-//show
-Route::get('/show/offers/top/',[showController::class,'showTopOffers']);
-Route::get('/show/offers/remaining/',[showController::class,'showRemainingOffers']);
-Route::get('/show/offer/{offre}',[showController::class,'showOffer']);
-
-
-Route::get('/show/activities/',[showController::class,'showActivities']);
-
-
-Route::get('/show/offer/activities/{offer}',[showController::class, 'showActivitiesInOffer']);
-Route::get('/show/offer/activities/more/{offer}',[showController::class, 'showActivitiesOfferInOffer']);
-Route::get('/show/offer/activities/all/{offer}',[showController::class,'showActivitiesInOfferAllInfos']);
 
 
 
 
-Route::get('/show/offer/activity/horaires/{activite_id}',[showController::class,'showHoraireInActivity']);
-
-Route::get('/show/offer/activity/enfants/{activite_id}',[showController::class,'showEnfantInActivity']);
-
-
-Route::get('/show/animateurs/',[ShowController::class,'showAnimateurs']);
-Route::get('/show/animateur/{animateur}',[ShowController::class,'showAnimateur']);
-Route::get('/show/all/horaires/animateur/{anim_id?}',[ShowController::class,'showAllHoraireOfAnimateur']);
-Route::get('/show/busy/horaires/animateur/{anim_id?}',[ShowController::class,'showBusyHoraireOfAnimateurs']);
-Route::get('/show/available/horaires/animateur/{anim_id?}',[ShowController::class,'showAvailableHoraireOfAnimateurs']);
-Route::get('/show/new/horaires/animateur/{anim_id}',[ShowController::class,'showHoraireForAnimToAdd']);
-
-//anim
-Route::post('/add/available/horaires/anim/',[AnimatorController::class,'addAvailableHour']);
-
-
-//AdminActiviteeOffreController
-
-Route::post('/add/offer/activity/{offer}/{activity}',[AdminActiviteeOffreController::class,'addActivityToOffer']);
-
-Route::put('/update/offer/activity/{activityOffer}',[AdminActiviteeOffreController::class,'updateActivityInOffer']);
-
-Route::delete('/delete/offer/activity/{activityOffer}',[AdminActiviteeOffreController::class,'destroyActivity']);
-
-
-//AdminOffreController
-Route::post('/create/offer/',[AdminOffreController::class,'createOffer']);
-
-Route::put('/update/offer/{offer}/',[AdminOffreController::class,'updateOffer']);
-
-Route::delete('/delete/offer/{offer}',[AdminOffreController::class,'destroyOffer']);
-
-
-
-
-Route::put('/update/demande/inscription/{demande_id}/{activite_offre_id}/{enfant_id}',[AdminDemandeController::class,'gererDemande']);
-
-
-
-
-Route::post('/create/activity/',[AdminActiviteeController::class,'createActivity']);
-
-Route::put('/update/activity/{activity}',[AdminActiviteeController::class,'updateActivity']);
-
-Route::delete('/delete/activity/{activity}',[AdminActiviteeController::class,'destroyActivity']);
-Route::post('/create/demande/',[ParentDemandeController::class,'storeDemande']);
-
-
-
-Route::delete('/delete/parent/by/admin/{parent}',[AdminUserController::class,'deleteParent']);
-Route::delete('/delete/animateur/by/admin/{animateur}',[AdminUserController::class,'deleteAnimateur']);
-
-
-Route::post('/create/horaire/',[AdminHoraireController::class,'createHoraire']);

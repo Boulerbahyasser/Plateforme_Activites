@@ -15,10 +15,13 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ["*"],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['*'],
-//    'allowed_origins' => ['http://localhost:8080'],
+    'allowed_origins' => [
+        env('FRONTEND_URL'),// il faut origin content : protocol+hostname+port
+        'http://localhost:8081',
+        'http://localhost:8082'
+    ],
     'allowed_origins_patterns' => [],
     'allowed_headers' => ['*'],
     'exposed_headers' => [],

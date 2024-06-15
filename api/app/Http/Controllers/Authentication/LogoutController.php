@@ -11,7 +11,8 @@ class LogoutController extends Controller
     public function logout()
     {
         $user = Auth::user();
-        $user->tokens()->delete();// suprimer la token qui genirer au niveaux authentification
+        // suprimer la token qui genirer au niveaux authentification
+        $user->tokens()->delete();
         return response()->json([
             'status'=>200,
             'message' => 'you are successfully logout '
