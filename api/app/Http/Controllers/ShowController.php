@@ -182,8 +182,7 @@ class ShowController extends Controller
         );
     }
 
-    public function showActivitiesInDemandeOfParent($demande_id)
-    {
+    public function showActivitiesInDemandeOfParent($demande_id){
         $etat = AdminDemandeController::isDemandeVerified($demande_id);
         $demandes = DemandeInscription::where('demande_id', $demande_id)
             ->select('activite_offre_id')
@@ -296,6 +295,8 @@ class ShowController extends Controller
         $parent = User::find($user_id)->select('name','email')->first();
         $parent['fonction'] = Father::where('user_id',$user_id)->first()->fonction;
         return response()->json($parent,200);
-
+    }
+    public function showParents(){
+        return response()->json(Father::latest()->get(),200);
     }
 }

@@ -126,7 +126,8 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
 
 
 
-
+Route::get('/show/parents/',[ShowController::class,'showParents']);
+Route::get('/show/packs/',[ShowController::class,'showPacks']);
 
 
 
