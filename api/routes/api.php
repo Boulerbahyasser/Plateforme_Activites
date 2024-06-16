@@ -87,7 +87,7 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
     Route::get('/show/notification/parent/remaining/',[ShowController::class,'showRemainingParentNotifications']);
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
     Route::get('/show/offers/',[showController::class,'showOffers']);
-    route::get('/show/parent/infos/',[ShowController::class,'showParentInfo']);
+    route::get('/show/parent/infos/{father_id?}',[ShowController::class,'showParentInfo']);
 
 
 

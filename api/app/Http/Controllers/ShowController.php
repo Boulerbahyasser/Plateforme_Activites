@@ -290,8 +290,9 @@ class ShowController extends Controller
     public function showPacks(){
         return response()->json(Pack::latest()->get(),200);
     }
-    public function showParentInfo(){
-        $user_id = auth()->id();
+    public function showParentInfo(Request $request){
+        if($request['father_id']) $user_id = Father::find($request['father_id'])->first()->user_id;
+        else $user_id = auth()->id();
         $parent = User::find($user_id)->select('name','email')->first();
         $parent['fonction'] = Father::where('user_id',$user_id)->first()->fonction;
         return response()->json($parent,200);
