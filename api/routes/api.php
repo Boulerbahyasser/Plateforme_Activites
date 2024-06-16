@@ -73,7 +73,10 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
     Route::put('/update/offer/activity/{activityOffer}',[AdminActiviteeOffreController::class,'updateActivityInOffer']);
     Route::delete('/delete/offer/activity/{activityOffer}',[AdminActiviteeOffreController::class,'destroyActivity']);
     Route::post('/create/horaire/',[AdminHoraireController::class,'createHoraire']);
+    Route::put('/update/horaire/',[AdminHoraireController::class,'updateHoraire']);
+    Route::put('/update/horaire/',[AdminHoraireController::class,'deleteHoraire']);
 
+    Route::put('/devis/update/{id}',[ ParentDemandeController::class,'UpdateDevis']);
 
 
     // parent
@@ -84,6 +87,7 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
     Route::get('/show/notification/parent/remaining/',[ShowController::class,'showRemainingParentNotifications']);
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
     Route::get('/show/offers/',[showController::class,'showOffers']);
+    route::get('/show/parent/infos/',[ShowController::class,'showParentInfo']);
 
 
 
@@ -92,8 +96,8 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
     Route::get('/show/parent/demande/activities/{demande_id}',[ShowController::class,'showActivitiesInDemandeOfParent']);
     Route::get('/show/parent/demande/activity/enfants/{demande_id}/{activite_offre_id}',[ShowController::class,'showEnfantInActivityInDemandeOfParent']);
     Route::delete('/delete/notification/{notification}',[NotificationController::class,'deleteNotification']);
-    Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotification']);
-    Route::post('/create/demande/',[ParentDemandeController::class,'storeDemande']);
+    Route::get('/delete/notification/all/',[NotificationController::class,'deleteAllUserNotifications']);
+    Route::post('/create/demande/{pack?}',[ParentDemandeController::class,'storeDemande']);
     Route::put('/update/demande/inscription/{demande_id}/{activite_offre_id}/{enfant_id}',[AdminDemandeController::class,'gererDemande']);
     Route::get('/create/facture/',[ParentFactureController::class,'createFacture']);
 
@@ -118,8 +122,6 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
     Route::post('/add/available/horaires/anim/',[AnimatorController::class,'addAvailableHour']);
 
 });
-
-
 
 
 

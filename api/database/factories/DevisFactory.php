@@ -17,7 +17,7 @@ class DevisFactory extends Factory
             'date' => $this->faker->dateTime,
             'totale_ht' => $this->faker->randomFloat(2, 100, 1000),
             'totale_ttc' => $this->faker->randomFloat(2, 120, 1200),
-            'statut' => $this->faker->randomElement(['payé', 'non payé']),
+            'statut' => $this->faker->randomElement(['accepte', 'refuse']),
             'pdf' => $this->faker->paragraph,
             'etat' => $this->faker->randomElement(['payé', 'non payé']),
             'motif' => $this->faker->paragraph,

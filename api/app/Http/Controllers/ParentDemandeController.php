@@ -35,17 +35,13 @@ class ParentDemandeController extends Controller
     $demande_id = $demande_->id;
         foreach($demandes as $demande){
           $horaire = explode(',',$demande['horaire']);
-//          $horaire2 = explode(',',$demande['horaire2']);
-              $horaire_id = Horaire::where('jour', $horaire[0])->where('heure_debut', $horaire[1])
+          $horaire_id = Horaire::where('jour', $horaire[0])->where('heure_debut', $horaire[1])
                   ->where('heure_fin', $horaire[2])->first()->id;
 
-          //return response()->json($horaire_id,200);
-//          $horaire2_id = Horaire::where('jour',$horaire2[0])->where('heure_debut',$horaire2[1])
-//              ->where('horaires.heure_fin',$horaire2[1])->first()->id;
           $hda = Hda::find($horaire_id);
-//          $hda2 = Hda::find($horaire2_id);
+
           $hda->update(['nbr_place_restant'=>$hda->nbr_place_restant-1]);
-//          $hda2->update(['nbr_place_restant'=>$hda2->nbr_place_restant-1]);
+
 
           DemandeInscription::create([
           'enfant_id' => $demande['enfant_id'],

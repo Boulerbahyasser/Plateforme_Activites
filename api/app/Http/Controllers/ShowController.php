@@ -87,7 +87,6 @@ class ShowController extends Controller
                 ->where('offre_id', $offer->id)->first();
             $offer['image'] = $activitie->image_pub??null;
         }
-
         return response()->json($offers, 200);
     }
 
@@ -290,5 +289,12 @@ class ShowController extends Controller
     }
     public function showPacks(){
         return response()->json(Pack::latest()->get(),200);
+    }
+    public function showParentInfo(){
+        $user_id = auth()->id();
+        $parent = User::find($user_id)->select('name','email')->first();
+        $parent['fonction'] = Father::where('user_id',$user_id)->first()->fonction;
+        return response()->json($parent,200);
+
     }
 }
