@@ -28,6 +28,20 @@ import AjouterActivite from "@/components/ADMIN/AjouterActivite.vue";
 import AjouterOffre from "@/components/ADMIN/AjouterOffre.vue";
 import OfferDetailsAdmin from "@/components/ADMIN/OfferDetailsAdmin.vue";
 import OffersListAdmin from "@/components/ADMIN/OffersListAdmin.vue";
+import ListeEnfantActivites from "@/components/ADMIN/ListeEnfantActivites.vue";
+import sidebar from "@/components/ADMIN/sidebar.vue";
+import TopOffers from "@/components/ADMIN/TopOffers.vue"
+import ActivitylistAdmin from "@/components/ADMIN/ActivitylistAdmin.vue"
+import Animateur from "@/components/ADMIN/Animateur.vue"
+
+function adminGuard(to, from, next) {
+  const userRole = localStorage.getItem('user_role');
+  if (userRole === 'admin') {
+    next();
+  } else {
+    next({ name: 'unauthorized' });
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(),
@@ -57,13 +71,35 @@ const router = createRouter({
     // { pat: '/addChild' , component:AddChild , name:"addChild"},
     { path:'/editChild/:id' , component:EditChild , name:"editChild"},
 { path: '/activitychildren/:requestId/activities/:activityId/children', component: ActivityChildren, name: "activityChildren" },
-    { path:'/AdminPage' , component:AdminPage , name:"AdminPage"},
-    { path:'/AjouterActivite' , component:AjouterActivite , name:"AjouterActivite"},
+    
+
+
+
+{ path:'/AdminPage' , component:AdminPage , name:"AdminPage", beforeEnter: adminGuard},
+    { path:'/AjouterActivite' , component:AjouterActivite , name:"AjouterActivite", beforeEnter: adminGuard},
       { path: '/ajouteroffre', component: AjouterOffre, name: "AjouterOffre"},
-    { path:'/offer/:id' , component:OfferDetailsAdmin , name:"OfferDetailsAdmin"},
-      { path: '/OffersListAdmin', component: OffersListAdmin, name: "OffersListAdmin"}
-
-
+    { path:'/offer/:id' , component:OfferDetailsAdmin , name:"OfferDetailsAdmin", beforeEnter: adminGuard},
+      { path: '/OffersListAdmin', component: OffersListAdmin, name: "OffersListAdmin", beforeEnter: adminGuard},
+      { 
+        path: '/unauthorized', 
+        component: UnaUthorized, 
+        name: "unauthorized"
+      },
+      {
+        path: '/ListeEnfantActivites/:id',component:ListeEnfantActivites,name:"ListeEnfantActivites", beforeEnter: adminGuard
+      },
+      {
+        path: '/sidebar',component:sidebar,name:"sidebar", beforeEnter: adminGuard
+      },
+      {
+        path: '/TopOffers',component:TopOffers,name:"TopOffers", beforeEnter: adminGuard
+      },
+      {
+        path: '/ActivitylistAdmin',component:ActivitylistAdmin,name:"ActivitylistAdmin", beforeEnter: adminGuard
+      },
+      {
+        path: '/Animateur',component:Animateur,name:"Animateur", beforeEnter: adminGuard
+      },
   ]
 });
 

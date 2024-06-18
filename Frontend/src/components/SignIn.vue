@@ -77,16 +77,22 @@ export default {
       if (this.emailError || this.passwordError) {
         return;
       }
+     
       getCSRFToken().then(()=>{
-
 
           axios.post('http://localhost:8000/api/login', this.user).then(response => {
 
           const token = response.data.token;
+          const role = response.data.role;
 
-          // document.cookie = 'auth_token=' + token + '; HttpOnly';// quand ajouter HttpOnly la token pas voir dans cookies
+          
+
           localStorage.setItem('auth_token', response.data.token);
+          localStorage.setItem('userid',response.data.userid)
           axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
+          localStorage.setItem('user_role', role);  // Store the user role
+
+
           alert('Connexion réussie!');
           this.$router.push('/offerspage');
           })
@@ -94,10 +100,13 @@ export default {
           console.error('Erreur de connexion:', error);
           alert(error.response.data.message);
           });
-
-
       })
 
+    },
+    logout() {
+      localStorage.removeItem('auth_token'); // Supprimer le token
+      localStorage.removeItem('user_role'); // Supprimer le rôle
+      this.$router.push('/login'); // Rediriger vers la page de connexion
     }
   }
 };

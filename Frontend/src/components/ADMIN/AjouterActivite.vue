@@ -3,28 +3,22 @@
     <h2 class="text-center">Ajouter une Activité</h2>
     <form @submit.prevent="submitForm" class="form">
       <div class="form-group">
-        <label for="titre">Titre de l'activité:</label>
-        <input type="text" id="titre" v-model="activite.titre" required class="form-control" />
+        <input type="text" id="titre" v-model="activite.titre" placeholder="Titre de l'activité" required class="form-control" />
       </div>
       <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea id="description" v-model="activite.description" required class="form-control"></textarea>
+        <textarea id="description" v-model="activite.description" placeholder="Description de l'activité" required class="form-control"></textarea>
       </div>
       <div class="form-group">
-        <label for="objectifs">Objectifs:</label>
-        <textarea id="objectifs" v-model="activite.objectifs" required class="form-control"></textarea>
+        <textarea id="objectifs" v-model="activite.objectifs" placeholder="Objectifs de l'activité" required class="form-control"></textarea>
       </div>
       <div class="form-group">
-        <label for="domaine">Domaine:</label>
-        <input type="text" id="domaine" v-model="activite.domaine" required class="form-control" />
+        <input type="text" id="domaine" v-model="activite.domaine" placeholder="Domaine de l'activité" required class="form-control" />
       </div>
       <div class="form-group">
-        <label for="image">Image:</label>
         <input type="file" id="image" @change="handleFileUpload" required class="form-control" ref="image" />
       </div>
       <div class="form-group">
-        <label for="lien_youtube">Lien YouTube:</label>
-        <input type="text" id="lien_youtube" v-model="activite.lien_youtube" class="form-control" />
+        <input type="text" id="lien_youtube" v-model="activite.lien_youtube" placeholder="Lien YouTube (optionnel)" class="form-control" />
       </div>
       <button type="submit" class="btn btn-primary">Ajouter</button>
     </form>
@@ -33,6 +27,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -80,7 +75,7 @@ export default {
           };
           this.image_pub = null;
           this.$refs.image.value = '';
-          this.$router.push('/AdminPgae');
+          this.$router.push('/AdminPage');
         })
         .catch(error => {
           console.error('Erreur lors de l\'ajout de l\'activité:', error.response.data);
@@ -93,7 +88,8 @@ export default {
 
 <style scoped>
 .container {
-  max-width: 600px;
+  width: 30%;
+  height: 50%;
   margin: 0 auto;
   padding: 20px;
   background: #f9f9f9;

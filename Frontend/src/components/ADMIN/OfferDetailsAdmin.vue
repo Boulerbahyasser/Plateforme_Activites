@@ -17,44 +17,59 @@
       <p>Chargement des détails de l'offre...</p>
     </div>
 
-    <div class="activities-section">
-      <button @click="fetchOfferActivities" class="btn-activities">Afficher les activités</button>
-      <div v-if="loadingActivities" class="loading">
-        <p>Chargement des activités...</p>
-      </div>
-      <div v-if="activitiesError" class="error">
-        <p>{{ activitiesError }}</p>
-      </div>
-      <div v-if="activities.length" class="activities">
-        <h3>Activités associées</h3>
-        <div v-for="activity in activities" :key="activity.id" class="activity-card card">
-          <p><strong>Tarif :</strong> {{ activity.tarif }}</p>
-          <p><strong>Âge minimum :</strong> {{ activity.age_min }}</p>
-          <p><strong>Âge maximum :</strong> {{ activity.age_max }}</p>
-          <p><strong>Nombre de séances :</strong> {{ activity.nbr_seance }}</p>
-          <p><strong>Volume horaire :</strong> {{ activity.volume_horaire }}</p>
-          <p><strong>Option de paiement :</strong> {{ activity.option_paiement }}</p>
-        </div>
+    <div class="button-container">
+      <button @click="toggleActivities" class="btn-activities">Afficher les activités</button>
+      <button @click="toggleAvailableActivities" class="btn-add-activity">Ajouter une activité</button>
+      <button @click="deleteOffer" class="btn-delete">Supprimer l'offre</button>
+    </div>
+ 
+    <div v-if="showActivities && activities.length" class="activities">
+      <h3>Activités associées</h3>
+      <div v-for="activity in activities" :key="activity.id" class="activity-card card">
+        <p><strong>Titre :</strong> {{ activity.titre }}</p>
+        <p><strong>Description:</strong> {{ activity.description }}</p>
+        <router-link :to="{ name: 'ListeEnfantActivites', params: { id: activity.id }}" class="details-btn">
+          <button type="button" class="btn btn-info">Les enfants</button>
+        </router-link>
       </div>
     </div>
-
-    <button @click="fetchAvailableActivities" class="btn-add-activity">Ajouter une activité</button>
-    <div v-if="availableActivities.length" class="available-activities">
-      <h3>Activités disponibles</h3>
+    <br><br>
+    <div v-if="showAvailableActivities && availableActivities.length" >
+      <h3 class="text-center">Activités disponibles</h3>
+      <div class="available-activities">
       <div v-for="activity in availableActivities" :key="activity.id" class="activity-card card">
-        <p><strong>Tarif :</strong> {{ activity.tarif }}</p>
-        <p><strong>Description :</strong> {{ activity.description}}</p>
-        <p><strong>Âge minimum :</strong> {{ activity.age_min }}</p>
-        <p><strong>Âge maximum :</strong> {{ activity.age_max }}</p>
-        <p><strong>Nombre de séances :</strong> {{ activity.nbr_seance }}</p>
-        <p><strong>Volume horaire :</strong> {{ activity.volume_horaire }}</p>
-        <p><strong>Option de paiement :</strong> {{ activity.option_paiement }}</p>
-        <button @click="addActivityToOffer(activity.id)" class="btn-add-to-offer">Ajouter à l'offre</button>
+        <p><strong>Titre :</strong> {{ activity.titre }}</p>
+        <p><strong>Description:</strong> {{ activity.description }}</p>
+        <p><strong>Lien YouTube :</strong> {{ activity.lien_youtube }}</p>
+        <button @click="openActivityForm(activity)" class="btn-add-to-offer">Ajouter à l'offre</button>
       </div>
     </div>
-
-    <button @click="deleteOffer" class="btn-delete">Supprimer l'offre</button>
+      <div v-if="showActivityForm" class="modal">
+      <div class="modal-content">
+        <h6 class="text-center">Ajouter une activité à l'offre</h6>
+        <form @submit.prevent="submitActivityForm">
+          <input v-model="formFields.tarif" type="number" placeholder="Tarif" required>
+          <input v-model="formFields.age_min" type="number" placeholder="Âge minimum" required>
+          <input v-model="formFields.age_max" type="number" placeholder="Âge maximum" required>
+          <input v-model="formFields.nbr_seance" type="number" placeholder="Nombre de séances" required>
+          <input v-model="formFields.volume_horaire" type="number" placeholder="Volume horaire" required>
+          <select v-model="formFields.option_paiement" required>
+            <option value="">Choisir une option de paiement</option>
+            <option value="annuel">Annuel</option>
+            <option value="mensuel">Mensuel</option>
+            
+          </select>
+          <div class="button-container">
+            <button @click="showActivityForm = false">Annuler</button>
+          <button type="submit" class="btn-add-activity">Ajouter</button>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -68,21 +83,44 @@ export default {
       activities: [],
       availableActivities: [],
       loadingActivities: false,
-      activitiesError: null
+      activitiesError: null,
+      showActivities: false,  // Ajoutée pour contrôler l'affichage des activités,
+      showAvailableActivities: false,  // Ajoutée pour contrôler l'affichage des activités disponibles
+      showActivityForm: false,
+      selectedActivity: null,
+      formFields: {
+        tarif: '',
+        age_min: '',
+        age_max: '',
+        nbr_seance: '',
+        volume_horaire: '',
+        option_paiement: ''
+      }
     };
   },
   created() {
     this.fetchOfferDetails();
   },
   methods: {
+    toggleActivities() {
+  if (this.activities.length === 0) {
+    this.fetchOfferActivities();  // Charge les activités si pas encore chargées
+  } else {
+    this.showActivities = !this.showActivities;  // Bascule l'affichage
+  }
+},
+toggleAvailableActivities() {
+    if (this.availableActivities.length === 0) { // Charge les activités disponibles si elles ne sont pas encore chargées
+      this.fetchAvailableActivities();
+    } else {
+      this.showAvailableActivities = !this.showAvailableActivities; // Bascule l'affichage
+    }
+  },
     fetchOfferDetails() {
       const offerId = this.$route.params.id;
       axios.get(`http://localhost:8000/api/show/offer/${offerId}`)
         .then(response => {
           this.offer = response.data;
-          if (!this.offer.activities) {
-            this.offer.activities = [];
-          }
         })
         .catch(error => {
           console.error('Erreur lors de la récupération des détails de l\'offre:', error);
@@ -96,6 +134,7 @@ export default {
         .then(response => {
           console.log('Réponse des activités:', response.data);
           this.activities = response.data;
+          this.loadingActivities = false;
         })
         .catch(error => {
           console.error('Erreur lors de la récupération des activités de l\'offre:', error);
@@ -110,21 +149,29 @@ export default {
         .then(response => {
           console.log('Réponse des activités disponibles:', response.data);
           this.availableActivities = response.data;
+          this.showAvailableActivities = true; // Affiche automatiquement les activités après les avoir chargées
+
         })
         .catch(error => {
           console.error('Erreur lors de la récupération des activités disponibles:', error);
         });
     },
-    addActivityToOffer(activityId) {
+    openActivityForm(activity) {
+      this.selectedActivity = activity;
+      this.showActivityForm = true;
+    },
+    submitActivityForm() {
+      const activityId = this.selectedActivity.id;
       const offerId = this.$route.params.id;
-      axios.post(`http://localhost:8000/api/add/offer/activity/${offerId}/${activityId}`)
-        .then(() => {
-          alert('Activité ajoutée à l\'offre avec succès');
-          this.fetchOfferActivities(); // Refresh the list of activities for the offer
+      axios.post(`http://localhost:8000/api/add/offer/activity/${offerId}/${activityId}`, this.formFields)
+        .then(()=> {
+          alert('Activité ajoutée avec succès!');
+          this.fetchOfferActivities(); // Refresh activities
+          this.showActivityForm = false;
+          this.formFields = {}; // Reset form fields
         })
         .catch(error => {
-          console.error('Erreur lors de l\'ajout de l\'activité à l\'offre:', error);
-          alert('Erreur lors de l\'ajout de l\'activité à l\'offre');
+          alert('Erreur lors de l\'ajout de l\'activité: ' + error.message);
         });
     },
     deleteOffer() {
@@ -146,13 +193,13 @@ export default {
   }
 };
 </script>
-
 <style scoped>
+/* Styles généraux pour la mise en page */
 .container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
-  background: #f7f7f7;
+  background: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
@@ -161,100 +208,153 @@ export default {
   text-align: center;
   margin-bottom: 20px;
   color: #333;
-  font-size: 2rem;
+  font-size: 1.8rem; /* Taille réduite pour les titres */
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
 }
 
+/* Style des détails de l'offre */
 .offer-details {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 20px;
-  margin-bottom: 20px;
 }
 
 .card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  flex: 1;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .card-title {
-  font-size: 1.5rem;
+  font-size: 1.4rem; /* Taille réduite pour les titres de cartes */
   color: #333;
   margin-bottom: 10px;
 }
 
 .offer-info p, .activity-card p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 8px;
+  font-size: 0.9rem; /* Réduction de la taille de la police pour les paragraphes */
+  color: #666;
+  padding: 5px 0;
 }
 
+/* Amélioration des images */
 .offer-image img {
-  max-width: 100%;
+  width: 100%;
+  max-height: 250px; /* Hauteur maximale réduite pour les images */
+  object-fit: cover;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.activities-section {
+/* Boutons et interactions */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
   margin-top: 20px;
 }
 
-.btn-activities, .btn-add-activity, .btn-delete, .btn-add-to-offer {
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background: #007bff;
-  color: #fff;
+/* Boutons réduits */
+.btn, .btn-add-to-offer, .details-btn button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 4px;
+}
+
+.btn-activities {
+  background-color: #007bff;
+  color: white;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  text-transform: uppercase;
+  padding: 6px 12px;
 }
 
 .btn-add-activity {
-  background: #28a745;
+  background-color: #28a745;
+  padding: 6px 12px;
 }
 
 .btn-delete {
-  background: #ff0000;
+  background-color: #dc3545;
+  padding: 6px 12px;
 }
 
-.btn-add-to-offer {
-  background: #17a2b8;
-  margin-top: 10px;
-}
-
-.btn-activities:hover, .btn-add-activity:hover, .btn-delete:hover, .btn-add-to-offer:hover {
+/* Hover effects */
+.btn:hover, .btn-add-to-offer:hover, .details-btn button:hover {
+  background-color: #0056b3;
   opacity: 0.9;
 }
 
-.activities {
-  margin-top: 20px;
+.btn-delete:hover {
+  background-color: #b02a37;
 }
 
-.activities h3 {
-  color: #333;
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  text-align: center;
+/* Modal et formulaires */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
-.activity-card {
-  margin-bottom: 20px;
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 450px; /* Largeur maximale réduite pour les contenus modaux */
 }
 
-.loading, .no-activities, .error {
-  text-align: center;
-  color: #999;
-  font-size: 1.2rem;
+/* Amélioration des cartes d'activité */
+.activities, .available-activities {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
 }
 
-.error {
-  color:red;
+.activity-card, h3 {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.details-btn, .btn-add-to-offer {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 10px 15px;
+}
+
+.details-btn:hover, .btn-add-to-offer:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .activities, .available-activities {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
