@@ -119,10 +119,10 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
 //animateurs
     Route::get('/show/animateurs/',[ShowController::class,'showAnimateurs']);
     Route::get('/show/animateur/{animateur}',[ShowController::class,'showAnimateur']);
-    Route::get('/show/all/horaires/animateur/{anim_id?}',[ShowController::class,'showAllHoraireOfAnimateur']);
-    Route::get('/show/busy/horaires/animateur/{anim_id?}',[ShowController::class,'showBusyHoraireOfAnimateurs']);
-    Route::get('/show/available/horaires/animateur/{anim_id?}',[ShowController::class,'showAvailableHoraireOfAnimateurs']);
-    Route::get('/show/new/horaires/animateur/{anim_id}',[ShowController::class,'showHoraireForAnimToAdd']);
+    Route::get('/show/all/horaires/animateur/{animateur_id?}',[ShowController::class,'showAllHoraireOfAnimateur']);
+    Route::get('/show/busy/horaires/animateur/{animateur_id?}',[ShowController::class,'showBusyHoraireOfAnimateurs']);
+    Route::get('/show/available/horaires/animateur/{animateur_id?}',[ShowController::class,'showAvailableHoraireOfAnimateurs']);
+    Route::get('/show/new/horaires/animateur/{animateur_id}',[ShowController::class,'showHoraireForAnimToAdd']);
     Route::post('/add/available/horaires/anim/',[AnimatorController::class,'addAvailableHour']);
 
 

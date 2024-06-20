@@ -21,10 +21,21 @@ class HoraireFactory extends Factory
      */
     public function definition(): array
     {
+        $heureDebut = $this->faker->time();
+        $heureFin = $this->faker->time();
+
+        // Vérifier que l'heure de début n'est pas après l'heure de fin
+        if ($heureDebut > $heureFin) {
+            // Inverser les valeurs si l'heure de début est après l'heure de fin
+            $temp = $heureDebut;
+            $heureDebut = $heureFin;
+            $heureFin = $temp;
+        }
+
         return [
             'jour' => $this->faker->randomElement(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']),
-            'heure_debut' => $this->faker->time(),
-            'heure_fin' => $this->faker->time(),
+            'heure_debut' => $heureDebut,
+            'heure_fin' => $heureFin,
         ];
     }
 }

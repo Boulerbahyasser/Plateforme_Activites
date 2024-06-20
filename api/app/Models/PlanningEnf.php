@@ -14,7 +14,7 @@ class PlanningEnf extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['enfant_id','activite_id','horaire_id'];
+    protected $fillable = [];
 
     /**
      * Indicates if the model's ID is auto-incrementing.

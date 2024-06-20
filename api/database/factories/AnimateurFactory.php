@@ -22,9 +22,30 @@ class AnimateurFactory extends Factory
      */
     public function definition(): array
     {
+        // Récupérer un utilisateur existant avec le rôle "animateur" ou en créer un si aucun n'existe
+        $userId = User::where('role', 'animateur')->inRandomOrder()->first();
+
+        if (!$userId) {
+            $userId = User::factory()->create(['role' => 'animateur']);
+        }
+
+        // Liste de domaines significatifs pour un animateur
+        $domaines = [
+            'Arts plastiques',
+            'Sciences',
+            'Technologie',
+            'Sport',
+            'Musique',
+            'Théâtre',
+            'Environnement',
+            'Mathématiques',
+            'Langues',
+            'Histoire'
+        ];
+
         return [
-            'domaine' => $this->faker->word,
-            'user_id' => User::factory()->create()->id,
+            'domaine' => $this->faker->randomElement($domaines),
+            'user_id' => $userId,
         ];
     }
 }

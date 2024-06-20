@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('demandes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pack_id')->nullable();
+            $table->unsignedBigInteger('pack_id');
             $table->unsignedBigInteger('admin_id');
             $table->dateTime('date');
             $table->string('statut');

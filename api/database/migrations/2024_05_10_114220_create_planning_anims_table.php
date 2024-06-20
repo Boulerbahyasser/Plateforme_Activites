@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('planning_anims', function (Blueprint $table) {
             $table->id();
             // Clés étrangères
-            $table->unsignedBigInteger('anim_id');
+            $table->unsignedBigInteger('animateur_id');
             $table->unsignedBigInteger('activite_id');
             $table->unsignedBigInteger('horaire_id');
 
 
             // Clés étrangères vers les tables parentes
-            $table->foreign('anim_id')->references('id')->on('animateurs')->onDelete('cascade');
+            $table->foreign('animateur_id')->references('id')->on('animateurs')->onDelete('cascade');
             $table->foreign('activite_id')->references('id')->on('activites')->onDelete('cascade');
             $table->foreign('horaire_id')->references('id')->on('horaires')->onDelete('cascade');
 

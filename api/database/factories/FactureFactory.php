@@ -12,7 +12,7 @@ class FactureFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => $this->faker->dateTime,
+            'date' => now(),
             'total_ht' => $this->faker->randomFloat(2, 100, 1000),
             'total_ttc' => $this->faker->randomFloat(2, 120, 1200),
         ];
