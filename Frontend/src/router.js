@@ -33,6 +33,13 @@ import sidebar from "@/components/ADMIN/sidebar.vue";
 import TopOffers from "@/components/ADMIN/TopOffers.vue"
 import ActivitylistAdmin from "@/components/ADMIN/ActivitylistAdmin.vue"
 import Animateur from "@/components/ADMIN/Animateur.vue"
+import AnimateurList from "@/components/ANIMATEUR/AnimateurList.vue";
+import AnimDetails from "@/components/ANIMATEUR/AnimDetails.vue";
+import AnimeAddHoraire from "@/components/ANIMATEUR/AnimeAddHoraire.vue";
+import AnimeDispHoraire from "@/components/ANIMATEUR/AnimeDispHoraire.vue";
+import AnimeHoraire from "@/components/ANIMATEUR/AnimeHoraire.vue";
+import AnimeOcuperHoraire from "@/components/ANIMATEUR/AnimeOcuperHoraire.vue";
+import AnimateurDashboard from "@/components/ANIMATEUR/AnimateurDashboard.vue";
 
 function adminGuard(to, from, next) {
   const userRole = localStorage.getItem('user_role');
@@ -100,6 +107,14 @@ const router = createRouter({
       {
         path: '/Animateur',component:Animateur,name:"Animateur", beforeEnter: adminGuard
       },
+
+          { path:'/AnimateurList' , component:AnimateurList , name:"AnimateurList"},
+    { path:'/AnimDetails' , component:AnimDetails , name:"AnimDetails"},
+    { path:'/AnimeAddHoraire' , component:AnimeAddHoraire , name:"AnimeAddHoraire"},
+    { path:'/AnimeDispHoraire' , component:AnimeDispHoraire , name:"AnimeDispHoraire"},
+    { path:'/AnimeHoraire' , component:AnimeHoraire , name:"AnimeHoraire"},
+    { path:'/AnimeOcuperHoraire' , component:AnimeOcuperHoraire , name:"AnimeOcuperHoraire"},
+      { path:'/AnimateurDashboard' , component:AnimateurDashboard , name:"AnimateurDashboard"}
   ]
 });
 
