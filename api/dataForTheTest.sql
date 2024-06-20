@@ -387,7 +387,7 @@ VALUES
     (20, 20, 9, 18, 17, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 
-INSERT INTO hd_anims (anim_id, horaire_id, created_at, updated_at)
+INSERT INTO hd_anims (animateur_id, horaire_id, created_at, updated_at)
 VALUES
     (1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -410,7 +410,7 @@ VALUES
     (19, 19, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (20, 20, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
-INSERT INTO planning_anims (anim_id, activite_id, horaire_id, created_at, updated_at)
+INSERT INTO planning_anims (animateur_id, activite_id, horaire_id, created_at, updated_at)
 VALUES
     (1, 1, 1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
     (2, 2, 2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),

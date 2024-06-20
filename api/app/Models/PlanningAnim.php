@@ -14,7 +14,7 @@ class PlanningAnim extends Model
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['animateur_id','activite_id','horaire_id'];
 
     /**
      * The table associated with the model.
@@ -35,7 +35,7 @@ class PlanningAnim extends Model
      *
      * @var array
      */
-    protected $primaryKey = ['anim_id', 'activite_id', 'horaire_id'];
+    protected $primaryKey = ['animateur_id', 'activite_id', 'horaire_id'];
 
     /**
      * The attributes that should be cast.
@@ -43,7 +43,7 @@ class PlanningAnim extends Model
      * @var array
      */
     protected $casts = [
-        'anim_id' => 'integer',
+        'animateur_id' => 'integer',
         'activite_id' => 'integer',
         'horaire_id' => 'integer',
     ];
@@ -53,7 +53,7 @@ class PlanningAnim extends Model
      */
     public function animateur(): BelongsTo
     {
-        return $this->belongsTo(Animateur::class, 'anim_id');
+        return $this->belongsTo(Animateur::class, 'animateur_id');
     }
 
     /**

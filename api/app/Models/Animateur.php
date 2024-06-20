@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Animateur extends Model
 {
@@ -32,7 +33,7 @@ class Animateur extends Model
      */
     public function horaires(): BelongsToMany
     {
-        return $this->belongsToMany(Horaire::class, 'hdanims', 'animateur_id', 'horaire_id');
+        return $this->belongsToMany(Horaire::class, 'hd_anims', 'animateur_id', 'horaire_id');
     }
 
     /**
@@ -42,4 +43,17 @@ class Animateur extends Model
     {
         return $this->belongsToMany(Activite::class, 'planning_anims', 'animateur_id', 'activite_id');
     }
+
+    public function hdAnims(): HasMany
+    {
+        return $this->hasMany(HdAnim::class);
+    }
+
+    public function planningAnims(): HasMany
+    {
+        // Assumez que 'PlanningAnim' est le modèle approprié pour cette relation
+        return $this->hasMany(PlanningAnim::class);
+    }
+
 }
+
