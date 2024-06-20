@@ -68,9 +68,11 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
+  color: #0056b3;
   font-size: 2.5rem;
   margin-bottom: 20px;
+  font-weight: bold;
+
 }
 
 .activity-item {

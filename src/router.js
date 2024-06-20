@@ -24,6 +24,7 @@ import ActivityChildren from "@/components/ActivityChildren.vue";
 import EditChild from "@/components/EditChild.vue";
 import AdminPage from "@/components/ADMIN/AdminPage.vue";
 import AjouterEnfant from "@/components/AjouterEnfant.vue";
+import FAQ from "@/components/FAQ.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -40,8 +41,8 @@ const router = createRouter({
     { path:'/choosechildren' , component:ChooseChildren , name:"choosechildren"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
     { path:'/selectshedule/:activityId' , component:SelectSchedule , name:"selectshedule"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
     { path: '/submitrequest' , component:SubmitRequest , name:"submitrequest"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
-    { path:'/notificationpage' , component:NotificationsPage , name:"notificationpage" },
-    { path:'/notificationhistory' , component:NotificationHistory , name:"notificationhistory"},
+    { path:'/notificationpage' , component:NotificationsPage , name:"notificationpage"  ,  meta: { requiresAuth: true , roles: ['parent' , 'admin'] }},
+    { path:'/notificationhistory' , component:NotificationHistory , name:"notificationhistory"  ,  meta: { requiresAuth: true , roles: ['parent', 'admin'] }},
     { path:'/userprofile' , component:UserProfile , name:"userprofile" } ,
     { path:'/unauthorized' , component:UnaUthorized ,name:"unauthorized"},
     { path: '/parentrequests', component: ParentRequests , name: "parentrequests"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
@@ -54,6 +55,7 @@ const router = createRouter({
 { path: '/activitychildren/:requestId/activities/:activityId/children', component: ActivityChildren, name: "activityChildren"  ,  meta: { requiresAuth: true , roles: ['parent'] } } ,
     { path:'/AdminPage' , component:AdminPage , name:"AdminPage"},
     { path:'/AjouterEnfant' , component:AjouterEnfant , name:"AjouterEnfant"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
+    { path:'/FAQ' , component:FAQ , name:"FAQ"}
   ]
 });
 

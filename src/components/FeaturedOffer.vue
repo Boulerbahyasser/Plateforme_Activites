@@ -1,6 +1,6 @@
 <template>
   <div class="offer-container" v-if="offers.length">
-    <button @click="prevOffer" class="nav-btn left-btn"></button>
+    <button @click="prevOffer" class="nav-btn left-btn"><i class="fas fa-chevron-left"></i></button>
     <transition name="fade" mode="out-in">
       <div class="offer-content" :key="currentOffer.id">
         <div class="text-section">
@@ -13,18 +13,18 @@
         </div>
         <div class="date-section">
           <div class="date">
-            <span><strong>Date de début :</strong> {{ formatDate(currentOffer.date_debut) }}</span>
+            <span class="date-text">Date de début : </span> {{ formatDate(currentOffer.date_debut) }}
           </div>
           <div class="date">
-            <span><strong>Date de fin :</strong> {{ formatDate(currentOffer.date_fin) }}</span>
+            <span class="date-text">Date de fin : </span> {{ formatDate(currentOffer.date_fin) }}
           </div>
         </div>
         <div class="image-section">
-          <img src="@/assets/child.png" alt="Offer Image" class="offer-image">
+          <img :src="`http://localhost:8000/storage/activites_img/${currentOffer.image}`" alt="Offer Image" class="offer-image">
         </div>
       </div>
     </transition>
-    <button @click="nextOffer" class="nav-btn right-btn"></button>
+    <button @click="nextOffer" class="nav-btn right-btn"><i class="fas fa-chevron-right"></i></button>
   </div>
   <div v-else class="loading-message">Chargement des offres...</div>
 </template>
@@ -168,27 +168,34 @@ h2 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.date-text {
+  font-size: 1.2rem;
+  color: #565d5e;
+  font-weight: bold;
+}
+
 .nav-btn {
   border: none;
   background: transparent;
   color: #007bff;
-  font-size: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
   padding: 10px;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, transform 0.3s ease;
   position: absolute;
 }
 
 .left-btn {
-  left: 20px;
+  left: 10px;
 }
 
 .right-btn {
-  right: 20px;
+  right: 10px;
 }
 
 .nav-btn:hover {
   color: #0056b3;
+  transform: scale(1.2);
 }
 
 .loading-message {
@@ -234,7 +241,8 @@ h2 {
   transition: opacity 0.5s ease-in-out;
 }
 
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
+{
   opacity: 0;
 }
 </style>

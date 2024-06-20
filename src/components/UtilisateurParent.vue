@@ -7,10 +7,10 @@
       </button>
     </div>
     <div class="navbar-center">
-      <router-link to="/welcome" class="nav-link">Accueil</router-link>
+      <router-link to="/offerspage" class="nav-link">Accueil</router-link>
       <router-link to="/AproposNous" class="nav-link">À propos de nous</router-link>
       <router-link to="/contact" class="nav-link">Contact</router-link>
-      <router-link to="/howtouse" class="nav-link">Comment utiliser</router-link>
+      <router-link to="/FAQ" class="nav-link">FAQ</router-link>
     </div>
     <div class="navbar-right">
       <router-link to="/notificationpage" class="icon-link"><i class="fas fa-bell"></i></router-link>
@@ -19,7 +19,7 @@
         <div v-if="showProfileMenu" class="dropdown-menu">
           <router-link to="/userprofile">Profil</router-link>
           <router-link to="/userchildren">Mes Enfants</router-link>
-          <router-link to="/changepassword">Changer mot de passe</router-link>
+          <router-link :to="`/changepassword/${token}`">Changer mot de passe</router-link>
           <router-link to="/parentrequests">Mes demandes</router-link>
           <button @click="logout">Déconnexion</button>
         </div>
@@ -45,7 +45,7 @@
             <i class="fas fa-chevron-down"></i>
           </div>
           <ul v-show="option.isActive" class="sidebar-submenu">
-            <li v-for="child in option.items" :key="child.id">
+            <li v-for="child in children" :key="child.id">
               <a href="#" class="sidebar-submenu-item" @click.prevent="selectChild(child)">
                 <i class="fas fa-chevron-right"></i>
                 {{ child.prenom }} {{ child.nom }}
@@ -131,18 +131,21 @@ export default {
           isActive: false,
           items: []
         }
-      ]
+      ],
+      token: '' // Ajouter ici pour stocker le token
     };
   },
   created() {
     this.fetchChildren();
+    this.token = this.$route.params.token; // Initialiser le token à partir des paramètres de la route
   },
   methods: {
     toggleProfileMenu() {
       this.showProfileMenu = !this.showProfileMenu;
     },
     logout() {
-      this.$router.push('/signin');
+      localStorage.removeItem('token');
+      this.$router.push('/ConnexionPage');
     },
     toggleSidebar() {
       this.isSidebarOpen = !this.isSidebarOpen;
@@ -169,14 +172,21 @@ export default {
     closeAddChildForm() {
       this.showAddChildForm = false;
     },
-    fetchChildren() {
-      axios.get('http://localhost:8000/api/show/parent/enfant/')
-        .then(response => {
-          this.opciones[0].items = response.data; // Assurez-vous que les données sont correctement mappées
-        })
-        .catch(error => {
-          console.error('Erreur lors de la récupération des enfants:', error);
-        });
+    async fetchChildren() {
+      try {
+        const response = await axios.get('http://localhost:8000/api/show/parent/enfant/');
+        console.log('Response data:', response.data);
+        if (Array.isArray(response.data) && Array.isArray(response.data[0])) {
+          this.children = response.data[0]; // Assigne le tableau imbriqué
+        } else {
+          this.children = response.data;
+        }
+        this.loading = false;
+      } catch (error) {
+        console.error('Erreur lors de la récupération des enfants:', error);
+        this.loading = false;
+        this.error = true;
+      }
     },
     selectChild(child) {
       this.selectedChild = child;
@@ -200,6 +210,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 /* Global Styles */
 * {
@@ -244,10 +255,11 @@ html, body {
 .nav-link {
   color: white;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 18px;
 }
 .nav-link:hover {
   text-decoration: underline;
+  font-weight: bold;
 }
 .navbar-right {
   display: flex;

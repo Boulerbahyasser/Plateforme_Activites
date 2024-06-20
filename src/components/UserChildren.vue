@@ -1,7 +1,10 @@
 <template>
   <div class="user-children-container">
     <h1>Mes Enfants</h1>
-    <button @click="goToAddChild" class="add-child-btn">Ajouter un enfant</button>
+    <p class="directive-text">Voici la liste de vos enfants. Vous pouvez ajouter un enfant, voir la planification ou éditer les informations de chaque enfant.</p>
+    <button @click="goToAddChild" class="add-child-btn">
+      <i class="fas fa-plus"></i> Ajouter un enfant
+    </button>
     <div v-if="loading" class="loader">Chargement des enfants...</div>
     <div v-else-if="error" class="error-message">Erreur lors de la récupération des enfants. Veuillez réessayer plus tard.</div>
     <div v-else>
@@ -15,8 +18,12 @@
           <p><strong>Niveau :</strong> {{ child.niveau }}</p>
         </div>
         <div class="action-buttons">
-          <button @click="goToChildPlanning(child.id)">Planification</button>
-          <button @click="editChild(child.id)">Éditer</button>
+          <button @click="goToChildPlanning(child.id)">
+            <i class="fas fa-calendar-alt"></i> Planification
+          </button>
+          <button @click="editChild(child.id)">
+            <i class="fas fa-edit"></i> Éditer
+          </button>
         </div>
       </div>
     </div>
@@ -59,7 +66,7 @@ export default {
       this.$router.push({ name: 'childplanning', params: { id: childId } });
     },
     editChild(childId) {
-      this.$router.push({ name: 'editchild', params: { id: childId } });
+      this.$router.push({ name: 'editChild', params: { id: childId } });
     },
     goToAddChild() {
       this.$router.push({ name: 'AjouterEnfant' });
@@ -69,6 +76,8 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
 .user-children-container {
   padding: 20px;
   text-align: center;
@@ -77,9 +86,15 @@ export default {
 }
 
 h1 {
-  font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
   font-size: 2.5rem;
+  font-weight: bold;
+  color: #0056b3;
+  font-family: 'Baloo Bhaijaan 2', cursive;
+}
+
+.directive-text {
+  font-size: 1.2rem;
+  color: #7f8c8d;
   margin-bottom: 20px;
 }
 
@@ -172,6 +187,10 @@ button {
   transition: background-color 0.3s, box-shadow 0.3s;
   background-color: #3498db;
   color: white;
+}
+
+button i {
+  margin-right: 5px;
 }
 
 button:hover {

@@ -1,26 +1,29 @@
 <template>
   <div class="user-profile">
     <h1>Profil Utilisateur</h1>
-    <form @submit.prevent="updateProfile" class="profile-form">
-      <div class="form-group">
-        <label for="email" class="form-label"><i class="fas fa-envelope"></i> Email:</label>
-        <input type="email" id="email" v-model="user.email" disabled class="form-input">
-      </div>
-      <div class="form-group">
-        <label for="name" class="form-label"><i class="fas fa-user"></i> Nom:</label>
-        <input type="text" id="name" v-model="user.name" class="form-input">
-      </div>
-      <div class="form-group">
-        <label for="role" class="form-label"><i class="fas fa-briefcase"></i> Fonction:</label>
-        <input type="text" id="role" v-model="user.role" class="form-input">
-      </div>
-      <button type="submit" class="profile-submit">Mettre à jour le profil</button>
-    </form>
+    <div v-if="loading" class="loader">Chargement du profil...</div>
+    <div v-else-if="error" class="error-message">Erreur lors de la récupération du profil. Veuillez réessayer plus tard.</div>
+    <div v-else>
+      <form @submit.prevent="updateProfile" class="profile-form">
+        <div class="form-group">
+          <label for="email" class="form-label"><i class="fas fa-envelope"></i> Email:</label>
+          <input type="email" id="email" v-model="user.email" disabled class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="name" class="form-label"><i class="fas fa-user"></i> Nom:</label>
+          <input type="text" id="name" v-model="user.name" class="form-input">
+        </div>
+        <div class="form-group">
+          <label for="role" class="form-label"><i class="fas fa-briefcase"></i> Fonction:</label>
+          <input type="text" id="role" v-model="user.fonction" class="form-input" >
+        </div>
+        <button type="submit" class="profile-submit">Mettre à jour le profil</button>
+      </form>
+    </div>
   </div>
 </template>
-
 <script>
-import axios from 'axios';
+import axios from '@/axios';
 
 export default {
   data() {
@@ -28,7 +31,7 @@ export default {
       user: {
         email: '',  // Cet email sera récupéré via l'API
         name: '',  // Nom récupéré via l'API
-        role: '',  // Modifiable par l'utilisateur
+        role: ''   // Fonction récupérée via l'API
       },
       loading: true,
       error: false
@@ -40,8 +43,9 @@ export default {
   methods: {
     async fetchUserProfile() {
       try {
-        const response = await axios.get('http://localhost:8000/api/user/profile');
-        this.user = response.data;
+        const response = await axios.get('http://localhost:8000/api/my-profile');
+        console.log(response.data);
+        this.user = response.data.user;
         this.loading = false;
       } catch (error) {
         console.error('Erreur lors de la récupération du profil:', error);
@@ -51,16 +55,19 @@ export default {
     },
     async updateProfile() {
       try {
-        const response = await axios.put('http://localhost:8000/api/user/profile', this.user);
+        const response = await axios.put('http://localhost:8000/api/my-profile', {
+          name: this.user.name,
+        });
         console.log("Mise à jour des données de l'utilisateur réussie:", response.data);
+        alert('Profil mis à jour avec succès');
       } catch (error) {
         console.error('Erreur lors de la mise à jour du profil:', error);
+        alert('Erreur lors de la mise à jour du profil. Veuillez réessayer plus tard.');
       }
     }
   }
 }
 </script>
-
 <style scoped>
 .user-profile {
   max-width: 600px;
@@ -74,7 +81,8 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
+  font-weight: bold;
+  color: #0056b3;
   font-size: 2.5rem;
   margin-bottom: 20px;
 }

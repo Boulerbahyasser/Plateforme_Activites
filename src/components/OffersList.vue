@@ -22,11 +22,11 @@
     <div v-else>
       <div v-if="error" class="error-message">
         <p>Une erreur s'est produite lors du chargement des offres : {{ error }}</p>
-        <button @click="fetchOffers">Réessayer</button>
+        <button @click="fetchOffers" class="retry-btn">Réessayer</button>
       </div>
       <div v-else class="offers-grid">
         <div class="offer" v-for="offer in filteredOffers" :key="offer.id">
-          <img src="@/assets/child.png" alt="Offer Image" class="offer-image">
+          <img :src="`http://localhost:8000/storage/activites_img/${offer.image}`" alt="Offer Image" class="offer-image">
           <div class="offer-details">
             <h4>{{ offer.titre }}</h4>
             <p>{{ offer.description.slice(0, 100) }}...</p>
@@ -136,13 +136,14 @@ export default {
 }
 
 h3 {
-  color: #333;
-  font-family: 'Baloo Bhaijaan 2', cursive;
-  font-size: 2rem;
   padding-bottom: 10px;
   border-bottom: 3px solid #eee;
   margin-bottom: 30px;
   text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0056b3;
+  font-family: 'Baloo Bhaijaan 2', cursive;
 }
 
 .search-bar {
@@ -169,9 +170,9 @@ h3 {
 
 .search-icon {
   position: absolute;
-  left: calc(15% - 30px); /* Ajustez cette valeur pour aligner correctement l'icône */
+  left: calc(17% - 30px); /* Ajustez cette valeur pour aligner correctement l'icône */
   font-size: 1.2rem;
-  color: #797878;
+  color: #5e5e5e;
 }
 
 .filter-btn {
@@ -278,6 +279,22 @@ h3 {
   color: red;
   text-align: center;
   margin-top: 20px;
+}
+
+.retry-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.retry-btn:hover {
+  background-color: #cc0000;
 }
 
 .pagination {

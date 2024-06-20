@@ -133,9 +133,10 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
   font-size: 2.5rem;
   margin-bottom: 20px;
+  font-weight: bold;
+  color: #0056b3;
 }
 
 .edit-child-form {

@@ -2,11 +2,11 @@
   <div class="submit-request-container">
     <h1>Récapitulatif de la Demande</h1>
     <div v-for="(activity, index) in selectedActivities" :key="index" class="activity-summary">
-      <h2>Offre: {{ activity.offerTitre }}</h2>
-      <p>Activité: {{ activity.activityTitre }}</p>
-      <p>Enfant: {{ activity.childName }}</p>
-      <p>Les Horaires:
-        <span>Horaire est : {{ activity.schedule1 }} </span>
+      <h2><span class="titre_offre">Offre : </span> {{ activity.offerTitre }}</h2>
+      <p><span class="titre_parti">Activité : </span> {{ activity.activityTitre }}</p>
+      <p><span class="titre_parti">Enfant : </span> {{ activity.childName }}</p>
+      <p><span class="titre_parti">L'horaire : </span>
+        <span> {{ activity.horaire }} </span>
       </p>
     </div>
     <div class="pack-selection">
@@ -22,11 +22,14 @@
         </label>
       </div>
     </div>
+    <p class="instruction-text">Si vous avez terminé l'ajout de tous les enfants que vous voulez dans les activités, vous pouvez envoyer la demande.</p>
     <button @click="submitRequest">Soumettre la Demande</button>
   </div>
 </template>
+
 <script>
-import axios from 'axios';
+import axios from '@/axios';
+
 
 export default {
   name: 'SubmitRequest',
@@ -39,10 +42,15 @@ export default {
   methods: {
     async submitRequest() {
       try {
-        const response = await axios.post('http://localhost:8000/api/create/demande/', {
-          activities: this.selectedActivities,
-          selectedPack: this.selectedPack // Inclure le pack sélectionné
+
+        const selectedPackString = this.selectedPack.join(',');
+        alert(selectedPackString);
+
+
+        const response = await axios.post(`http://localhost:8000/api/create/demande/${selectedPackString}`, {
+          activities:this.selectedActivities
         });
+
         alert(response.data.name);
         localStorage.removeItem('selectedActivities'); // Nettoyer le localStorage après soumission
         localStorage.removeItem('selectedPack'); // Nettoyer le stockage des packs après soumission
@@ -60,6 +68,7 @@ export default {
   }
 };
 </script>
+
 <style scoped>
 .submit-request-container {
   padding: 40px;
@@ -70,9 +79,10 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
+  color: #0056b3;
   font-size: 2.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-weight: bold;
 }
 
 .activity-summary {
@@ -90,6 +100,12 @@ h1 {
   color: #2c3e50;
   font-size: 1.8rem;
   margin-bottom: 10px;
+}
+
+.titre_parti {
+  font-size: 1.2rem;
+  color: #7f8c8d;
+  font-weight: bold;
 }
 
 .activity-summary p {
@@ -137,6 +153,13 @@ h1 {
   background-color: #2ecc71;
   color: white;
   border: none;
+}
+
+.instruction-text {
+  font-size: 1.2rem;
+  color: #4e6267;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
 button {

@@ -10,14 +10,14 @@
         <form @submit.prevent="submitForm">
           <div class="groupeInput">
             <label for="email">Email</label>
-            <input type="email" id="email" v-model="user.email" @blur="validateEmail" required>
+            <input type="email" id="email" v-model="user.email" @blur="validerEmail" required>
             <span v-if="emailError" class="erreur">{{ emailError }}</span>
           </div>
           <div class="groupeInput">
             <label for="password">Mot de passe</label>
             <div class="conteneurMotDePasse">
-              <input :type="showPassword ? 'text' : 'password'" id="password" v-model="user.password" @blur="validatePassword" required>
-              <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" @click="togglePasswordVisibility"></i>
+              <input :type="showPassword ? 'text' : 'password'" id="password" v-model="user.password" @blur="validerPassword" required>
+              <i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" @click="passwordvisible"></i>
             </div>
             <span v-if="passwordError" class="erreur">{{ passwordError }}</span>
           </div>
@@ -63,7 +63,7 @@ export default {
     };
   },
   methods: {
-    validateEmail() {
+    validerEmail() {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!re.test(this.user.email)) {
         this.emailError = 'Veuillez entrer un email valide';
@@ -71,19 +71,19 @@ export default {
         this.emailError = '';
       }
     },
-    validatePassword() {
+    validerPassword() {
       if (this.user.password.length < 8) {
         this.passwordError = 'Le mot de passe doit contenir au moins 8 caractères';
       } else {
         this.passwordError = '';
       }
     },
-    togglePasswordVisibility() {
+    passwordvisible() {
       this.showPassword = !this.showPassword;
     },
     submitForm() {
-      this.validateEmail();
-      this.validatePassword();
+      this.validerEmail();
+      this.validerPassword();
       if (this.emailError || this.passwordError) {
         return;
       }
@@ -94,7 +94,6 @@ export default {
           const token = response.data.token;
           const role = response.data.role ;
           localStorage.setItem('user_role', role) ;
-          // document.cookie = 'auth_token=' + token + '; HttpOnly';// quand ajouter HttpOnly la token pas voir dans cookies
           localStorage.setItem('auth_token', response.data.token);
           axios.defaults.headers.common[`Authorization`] = `Bearer ${token}`;
           alert('Connexion réussie!');
@@ -119,7 +118,7 @@ export default {
 }
 
 .sectionGauche {
-  flex: 0 0 63%; /* Prend 40% de l'espace */
+  flex: 0 0 63%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -133,7 +132,7 @@ export default {
 }
 
 .sectionDroite {
-  flex: 0 0 37%; /* Prend 60% de l'espace */
+  flex: 0 0 37%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -147,8 +146,8 @@ export default {
 }
 
 .conteneurFormulaire {
-  width: 80%; /* Augmenter la largeur */
-  max-width: 450px; /* Augmenter la largeur maximale */
+  width: 80%;
+  max-width: 450px;
   background-color: #ffffff;
   padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -162,7 +161,7 @@ h1 {
 }
 
 .groupeInput {
-  margin-bottom: 25px; /* Augmenter la marge entre les groupes d'input */
+  margin-bottom: 25px;
 }
 
 label {
@@ -176,7 +175,7 @@ input[type="text"],
 input[type="email"],
 input[type="password"] {
   width: 100%;
-  padding: 15px; /* Augmenter le padding */
+  padding: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -205,7 +204,7 @@ input[type="password"]:focus {
 
 button.boutonSoumettre {
   width: 100%;
-  padding: 15px 20px; /* Augmenter le padding */
+  padding: 15px 20px;
   border: none;
   background-color: #3498db;
   color: white;

@@ -3,7 +3,7 @@
   <div class="offer-details-container">
     <div class="offer-card" v-if="offer">
       <div class="offer-image">
-        <img src="@/assets/child.png" alt="Offer Image">
+        <img :src="`http://localhost:8000/storage/activites_img/${offer.image}`" alt="Offer Image">
       </div>
       <div class="offer-info">
         <div class="text-content">

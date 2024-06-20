@@ -14,7 +14,7 @@
           <p>{{ activity.description }}</p>
           <p><strong>Objectifs :</strong> {{ activity.objectifs }}</p>
           <p><strong>Domaine :</strong> {{ activity.domaine }}</p>
-          <p><strong>Tarif :</strong> {{ activity.tarif }} €</p>
+          <p><strong>Tarif :</strong> {{ activity.tarif_remise }} €</p>
           <div class="action-buttons">
             <button @click="toggleDetails(activity.id)" class="show-more-btn">Show More</button>
             <button @click="goToActivityDetails(activity)" class="choose-btn">Choisir les enfants</button>
@@ -30,6 +30,7 @@
         </div>
       </div>
     </div>
+    <p class="final-instruction-text">Si vous avez terminé l'ajout de tous les enfants que vous souhaitez inscrire dans les activités, vous pouvez envoyer la demande en cliquant sur le bouton ci-dessous.</p>
     <button @click="makeRequest" class="request-btn">Envoyer la demande</button>
   </div>
 </template>
@@ -101,14 +102,25 @@ h1 {
   color: #0056b3;
   font-size: 2.5rem;
   margin-bottom: 10px;
-  font-weight:bold ;
+  font-weight: bold;
 }
 
 .instruction-text {
   font-size: 1.2rem;
   color: #4e6267;
   margin-bottom: 20px;
+  position: relative;
 }
+
+
+.final-instruction-text {
+  font-size: 1.2rem;
+  color: #4e6267;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
 
 .loader {
   font-size: 1.5rem;

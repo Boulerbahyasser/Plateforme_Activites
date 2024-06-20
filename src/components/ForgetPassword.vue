@@ -17,8 +17,8 @@
           <div class="groupeInput">
             <button type="submit">Réinitialiser le mot de passe</button>
           </div>
-          <p class="already-registered">
-            <router-link to="/signin">Retour à la connexion</router-link>
+          <p class="dejaInscrit">
+            <router-link to="/ConnexionPage">Retour à la connexion</router-link>
           </p>
         </form>
       </div>
@@ -31,7 +31,7 @@ import axios from '@/axios';
 
 export default {
   name: 'ForgetPassword',
-  components: {  },
+  components: { },
   data() {
     return {
       email: ''
@@ -43,7 +43,7 @@ export default {
         .then(response => {
           alert('Un email de réinitialisation a été envoyé!');
           console.log(response.data);
-          this.$router.push('/signin');
+          this.$router.push('/ConnexionPage');
         })
         .catch(error => {
           console.error('Erreur lors de la réinitialisation du mot de passe:', error);
@@ -63,7 +63,7 @@ export default {
 }
 
 .sectionGauche {
-  flex: 0 0 63%; /* Prend 60% de l'espace */
+  flex: 0 0 63%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,7 +77,7 @@ export default {
 }
 
 .sectionDroite {
-  flex: 0 0 37%; /* Prend 40% de l'espace */
+  flex: 0 0 37%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -126,7 +126,6 @@ label {
   font-weight: 600;
 }
 
-
 input[type="password"],
 input[type="text"],
 input[type="email"] {
@@ -166,18 +165,18 @@ button:active {
   background-color: #2575b5;
 }
 
-.already-registered {
+.dejaInscrit {
   text-align: center;
   margin-top: 15px;
   color: #666;
 }
 
-.already-registered a {
+.dejaInscrit a {
   color: #2980b9;
   text-decoration: none;
 }
 
-.already-registered a:hover {
+.dejaInscrit a:hover {
   text-decoration: underline;
 }
 </style>
