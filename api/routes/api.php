@@ -88,6 +88,8 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
     Route::get('/show/demandes/admin/',[showController::class, 'showDemandesOfAdmin']);
     Route::get('/show/offers/',[showController::class,'showOffers']);
     route::get('/show/parent/infos/{father_id?}',[ShowController::class,'showParentInfo']);
+    Route::get('/show/parents/',[ShowController::class,'showParents']);
+
 
 
 
@@ -121,13 +123,15 @@ Route::middleware(['auth:sanctum','recaptcha'])->group(function (){
     Route::get('/show/new/horaires/animateur/{anim_id}',[ShowController::class,'showHoraireForAnimToAdd']);
     Route::post('/add/available/horaires/anim/',[AnimatorController::class,'addAvailableHour']);
 
+
+
+    Route::get('/show/packs/',[ShowController::class,'showPacks']);
+
 });
 
 
 
 
-Route::get('/show/parents/',[ShowController::class,'showParents']);
-Route::get('/show/packs/',[ShowController::class,'showPacks']);
 
 
 
