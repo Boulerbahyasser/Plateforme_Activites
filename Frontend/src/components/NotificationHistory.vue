@@ -65,8 +65,12 @@ export default {
 }
 
 h1 {
-  color: #305e8c;
-  text-align: center;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #0056b3;
+  font-family: 'Baloo Bhaijaan 2', cursive;
+    text-align: center;
+
 }
 
 ul {

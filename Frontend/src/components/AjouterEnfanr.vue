@@ -34,7 +34,7 @@
 import axios from '@/axios';
 
 export default {
-  name: 'AddChild',
+  name: 'AjouterEnfant',
   data() {
     return {
       child: {
@@ -110,8 +110,9 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
+  color: #0056b3;
   font-size: 2.5rem;
+  font-weight: bold;
   margin-bottom: 20px;
 }
 

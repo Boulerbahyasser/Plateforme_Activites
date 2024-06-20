@@ -24,7 +24,7 @@ export default {
   background: white;
   margin-bottom: 10px;
   border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
 }
 
 .notification-item p {

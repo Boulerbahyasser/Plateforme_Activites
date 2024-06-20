@@ -13,7 +13,7 @@
       <button @click="deleteAllNotifications">Supprimer toutes les notifications</button>
     </div>
     <div class="button-container">
-          <button @click="viewHistory">Voir l'historique des notifications</button>
+      <button @click="viewHistory">Voir l'historique des notifications</button>
     </div>
   </div>
 </template>
@@ -77,12 +77,15 @@ export default {
   padding: 20px;
   background: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  color: #305e8c;
   text-align: center;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #0056b3;
+  font-family: 'Baloo Bhaijaan 2', cursive;
 }
 
 ul {

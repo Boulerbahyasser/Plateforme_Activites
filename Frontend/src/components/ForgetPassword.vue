@@ -1,29 +1,37 @@
 <template>
-  <NavBar />
-  <div class="forget-password">
-    <h1>Mot de passe oublié</h1>
-    <form @submit.prevent="submitForm">
-      <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" v-model="email" required>
+  <div class="ConteneurResetMotDePasse">
+    <div class="sectionGauche">
+      <img src="@/assets/child.png" alt="Image d'inscription" class="imageInscription">
+    </div>
+    <div class="sectionDroite">
+      <div class="conteneurFormulaire">
+        <div class="conteneurLogo">
+          <img src="@/assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
+        </div>
+        <h1>Mot de passe oublié</h1>
+        <form @submit.prevent="submitForm">
+          <div class="groupeInput">
+            <label for="email">Email:</label>
+            <input type="email" id="email" v-model="email" required>
+          </div>
+          <div class="groupeInput">
+            <button type="submit">Réinitialiser le mot de passe</button>
+          </div>
+          <p class="dejaInscrit">
+            <router-link to="/ConnexionPage">Retour à la connexion</router-link>
+          </p>
+        </form>
       </div>
-      <div>
-        <button type="submit">Réinitialiser le mot de passe</button>
-      </div>
-      <p class="already-registered">
-        <router-link to="/signin">Retour à la connexion</router-link>
-      </p>
-    </form>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from '@/axios';
-import NavBar from "@/components/NavBar.vue";
 
 export default {
   name: 'ForgetPassword',
-  components: { NavBar },
+  components: { },
   data() {
     return {
       email: ''
@@ -35,13 +43,12 @@ export default {
         .then(response => {
           alert('Un email de réinitialisation a été envoyé!');
           console.log(response.data);
-          this.$router.push('/signin'); // Exemple de redirection vers la page de connexion
+          this.$router.push('/ConnexionPage');
         })
         .catch(error => {
           console.error('Erreur lors de la réinitialisation du mot de passe:', error);
-        // alert('Une erreur est survenue lors de la réinitialisation du mot de passe.');
-        console.log(error.response.data.message);
-        alert(error.response.data.message);
+          console.log(error.response.data.message);
+          alert(error.response.data.message);
         });
     }
   }
@@ -49,19 +56,67 @@ export default {
 </script>
 
 <style scoped>
-.forget-password {
-  max-width: 350px;
-  margin: 40px auto;
-  padding: 25px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  background-color: #f8f9fa;
+.ConteneurResetMotDePasse {
+  display: flex;
+  height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.sectionGauche {
+  flex: 0 0 63%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.imageInscription {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sectionDroite {
+  flex: 0 0 37%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.conteneurFormulaire {
+  width: 80%;
+  max-width: 450px;
+  background-color: #ffffff;
+  padding: 40px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.conteneurLogo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.logoPlateforme {
+  width: 150px;
 }
 
 h1 {
-  text-align: center;
   color: #333;
   margin-bottom: 20px;
+}
+
+.groupeInput {
+  margin-bottom: 20px;
+  width: 100%;
 }
 
 label {
@@ -71,35 +126,22 @@ label {
   font-weight: 600;
 }
 
-input[type="email"] {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 2px solid transparent;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.2s, box-shadow 0.2s;
-  box-sizing: border-box; /* Ensure the width is not affected by padding or border */
-}
-
-input[type="text"],
 input[type="password"],
+input[type="text"],
 input[type="email"] {
   width: 100%;
   padding: 10px;
-  margin-bottom: 20px;
-  border: 2px solid transparent;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: border-color 0.2s, box-shadow 0.2s;
-
 }
 
-input[type="text"]:focus,
-input[type="password"]:focus,
+input[type="password"],
+input[type="text"],
 input[type="email"]:focus {
   border-color: #3498db;
-  box-shadow: 0 2px 4px rgba(50, 150, 250, 0.5);
+  box-shadow: 0 0 8px rgba(50, 150, 250, 0.3);
 }
 
 button {
@@ -123,18 +165,18 @@ button:active {
   background-color: #2575b5;
 }
 
-.already-registered {
+.dejaInscrit {
   text-align: center;
   margin-top: 15px;
   color: #666;
 }
 
-.already-registered a {
+.dejaInscrit a {
   color: #2980b9;
   text-decoration: none;
 }
 
-.already-registered a:hover {
+.dejaInscrit a:hover {
   text-decoration: underline;
 }
 </style>

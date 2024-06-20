@@ -2,7 +2,9 @@
   <div class="request-activities">
     <h1>Activités pour la Demande</h1>
     <div v-if="loading">Chargement des activités...</div>
-    <div v-else-if="error" class="error-message">Erreur lors de la récupération des activités. Veuillez réessayer plus tard.</div>
+    <div v-else-if="error" class="error-message">Erreur lors de la récupération des activités. Veuillez réessayer plus
+      tard.
+    </div>
     <div v-else>
       <div v-for="activity in activities" :key="activity.id" class="activity-item">
         <div class="activity-details">
@@ -48,7 +50,7 @@ export default {
     },
     viewActivity(activityId) {
       const requestId = this.$route.params.id; // Récupération de l'ID de la demande via les paramètres de la route
-      this.$router.push({ name: 'activityChildren', params: { requestId: requestId, activityId: activityId } });
+      this.$router.push({name: 'activityChildren', params: {requestId: requestId, activityId: activityId}});
     }
   }
 };
@@ -68,9 +70,11 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
+  color: #0056b3;
   font-size: 2.5rem;
   margin-bottom: 20px;
+  font-weight: bold;
+
 }
 
 .activity-item {

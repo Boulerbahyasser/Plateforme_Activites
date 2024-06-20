@@ -2,17 +2,31 @@
   <div class="offers-list">
     <h3>Toutes les Offres</h3>
     <div class="search-bar">
+      <i class="fas fa-search search-icon"></i>
       <input type="text" v-model="searchQuery" placeholder="Rechercher des offres..." @input="searchOffers" />
+      <button @click="toggleFilter" class="filter-btn">
+        <i class="fas fa-filter"></i>
+      </button>
+      <div v-if="showFilter" class="filter-dropdown">
+        <label for="domaine">Filtrer par domaine :</label>
+        <select id="domaine" v-model="selectedDomain" @change="filterByDomain">
+          <option value="">Tous les domaines</option>
+          <option value="informatique">Informatique</option>
+          <option value="sciences">Sciences</option>
+          <option value="Mathématiques">Mathématiques</option>
+          <option value="Jeux">Jeux</option>
+        </select>
+      </div>
     </div>
     <div v-if="loading" class="loader">Chargement des offres...</div>
     <div v-else>
       <div v-if="error" class="error-message">
         <p>Une erreur s'est produite lors du chargement des offres : {{ error }}</p>
-        <button @click="fetchOffers">Réessayer</button>
+        <button @click="fetchOffers" class="retry-btn">Réessayer</button>
       </div>
       <div v-else class="offers-grid">
         <div class="offer" v-for="offer in filteredOffers" :key="offer.id">
-          <img src="@/assets/child.png" alt="Offer Image" class="offer-image">
+          <img :src="`http://localhost:8000/storage/activites_img/${offer.image}`" alt="Offer Image" class="offer-image">
           <div class="offer-details">
             <h4>{{ offer.titre }}</h4>
             <p>{{ offer.description.slice(0, 100) }}...</p>
@@ -42,17 +56,21 @@ export default {
       loading: true,
       error: null,
       searchQuery: '',
+      selectedDomain: '',
+      showFilter: false,
       currentPage: 1,
-      itemsPerPage: 8, // Changed to display 8 offers per page
+      itemsPerPage: 8,
     }
   },
   computed: {
     filteredOffers() {
       const searchLower = this.searchQuery.toLowerCase();
-      return this.offers.filter(offer =>
-        offer.titre.toLowerCase().includes(searchLower) ||
-        offer.description.toLowerCase().includes(searchLower)
-      ).slice(this.startIndex, this.endIndex);
+      return this.offers
+        .filter(offer =>
+          (offer.titre.toLowerCase().includes(searchLower) || offer.description.toLowerCase().includes(searchLower)) &&
+          (this.selectedDomain ? offer.domaine.toLowerCase() === this.selectedDomain.toLowerCase() : true)
+        )
+        .slice(this.startIndex, this.endIndex);
     },
     startIndex() {
       return (this.currentPage - 1) * this.itemsPerPage;
@@ -85,6 +103,12 @@ export default {
     searchOffers() {
       this.currentPage = 1;
     },
+    filterByDomain() {
+      this.currentPage = 1;
+    },
+    toggleFilter() {
+      this.showFilter = !this.showFilter;
+    },
     nextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
@@ -112,26 +136,69 @@ export default {
 }
 
 h3 {
-  color: #333;
-  font-family: 'Baloo Bhaijaan 2', cursive;
-  font-size: 2rem;
   padding-bottom: 10px;
   border-bottom: 3px solid #eee;
   margin-bottom: 30px;
   text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #0056b3;
+  font-family: 'Baloo Bhaijaan 2', cursive;
 }
 
 .search-bar {
   text-align: center;
   margin-bottom: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .search-bar input {
-  width: 80%;
+  width: 70%;
+  padding: 10px 10px 10px 35px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-bar input:focus {
+  box-shadow: 0 0 8px rgba(50, 150, 250, 0.3);
+}
+
+.search-icon {
+  position: absolute;
+  left: calc(17% - 30px); /* Ajustez cette valeur pour aligner correctement l'icône */
+  font-size: 1.2rem;
+  color: #5e5e5e;
+}
+
+.filter-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-left: 10px;
+}
+
+.filter-btn:hover {
+  color: #0056b3;
+}
+
+.filter-dropdown {
+  margin-top: 10px;
+  text-align: left;
+}
+
+.filter-dropdown select {
   padding: 10px;
   border-radius: 5px;
   border: 1px solid #ddd;
   font-size: 1rem;
+  width: 100%;
 }
 
 .loader {
@@ -212,6 +279,22 @@ h3 {
   color: red;
   text-align: center;
   margin-top: 20px;
+}
+
+.retry-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.retry-btn:hover {
+  background-color: #cc0000;
 }
 
 .pagination {

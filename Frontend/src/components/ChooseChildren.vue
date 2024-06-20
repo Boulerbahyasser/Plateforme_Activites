@@ -1,6 +1,7 @@
 <template>
   <div class="choose-children-container">
-    <h1>Choisissez les enfants pour l'activité: {{ activityTitre }}</h1>
+    <h1>Mes enfants</h1>
+    <p class="instruction-text">Choisissez les enfants auxquels vous souhaitez inscrire dans l'activité : <span class="activity-title">{{ activityTitre }}</span></p>
     <div v-if="loading">Chargement des enfants...</div>
     <div v-else-if="error" class="error-message">Erreur lors de la récupération des enfants. Veuillez réessayer plus tard.</div>
     <div v-else>
@@ -14,6 +15,7 @@
     <button @click="submitChildren" class="submit-btn">Terminer</button>
   </div>
 </template>
+
 <script>
 import axios from '@/axios';
 
@@ -36,9 +38,13 @@ export default {
   methods: {
     async fetchChildren() {
       try {
-        alert(this.activityId) ;
         const response = await axios.get(`http://localhost:8000/api/show/parent/enfant/`);
-        this.children = response.data;
+        console.log('Response data:', response.data);
+        if (Array.isArray(response.data) && Array.isArray(response.data[0])) {
+          this.children = response.data[0]; // Assigne le tableau imbriqué
+        } else {
+          this.children = response.data;
+        }
         this.loading = false;
       } catch (error) {
         console.error('Erreur lors de la récupération des enfants:', error);
@@ -49,7 +55,7 @@ export default {
     selectChild(childId) {
       this.$router.push({
         name: 'selectshedule',
-        params: { activityId: this.activityId },
+        params: {activityId: this.activityId},
         query: {
           activityTitre: this.activityTitre,
           offerId: this.offerId,
@@ -60,11 +66,12 @@ export default {
       });
     },
     submitChildren() {
-      this.$router.push(`/activitylist/${this.activityId}`);
+      this.$router.push({name: 'activitylist', params: {offerId: this.offerId}, query: {offerTitre: this.offerTitre}});
     }
   }
 };
 </script>
+
 <style scoped>
 .choose-children-container {
   display: flex;
@@ -75,6 +82,7 @@ export default {
 }
 
 h1 {
+  font-family: 'Baloo Bhaijaan 2', cursive;
   font-size: 2.5rem;
   font-weight: bold;
   color: #0056b3;
@@ -82,11 +90,25 @@ h1 {
   text-align: center;
 }
 
+.instruction-text {
+  font-size: 1.2rem;
+  color: #4e6267;
+  margin-bottom: 20px;
+  text-align: center; /* Centrer le texte */
+}
+
+.activity-title {
+  font-family: 'Arial', sans-serif;
+  font-size: 1.8rem;
+  color: #355ef6; /* Changer la couleur */
+  margin-bottom: 20px;
+}
+
 .child-card {
   width: 800px;
   display: flex;
   background: #fff;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 20px;
@@ -130,7 +152,7 @@ h1 {
 
 .submit-btn:hover {
   background-color: #0056b3;
-  box-shadow: 5px 5px 10px rgba(0,0,0,0.25);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
 }
 
 .submit-btn:active {

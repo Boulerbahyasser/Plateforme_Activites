@@ -13,7 +13,7 @@ import UtilisateurParent from "@/components/UtilisateurParent.vue";
 
 export default {
   components: {
-    FeaturedOffer ,
+    FeaturedOffer,
     OffersList,
     UtilisateurParent
   }

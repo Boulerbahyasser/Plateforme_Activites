@@ -99,7 +99,7 @@ export default {
     async deleteChild() {
       const childId = this.$route.params.id;
       try {
-        await axios.delete(`http://localhost:8000/api/children/${childId}`);
+        await axios.delete(`http://localhost:8000/api/delete/children/${childId}`);
         this.$router.push({ name: 'userchildren' });
       } catch (error) {
         console.error('Erreur lors de la suppression de l\'enfant:', error);
@@ -133,9 +133,10 @@ export default {
 
 h1 {
   font-family: 'Baloo Bhaijaan 2', cursive;
-  color: #34495e;
   font-size: 2.5rem;
   margin-bottom: 20px;
+  font-weight: bold;
+  color: #0056b3;
 }
 
 .edit-child-form {
