@@ -14,7 +14,7 @@ class AdminOffreController extends Controller
         $formFields = $request->validate([
             'titre' => 'required',
             'date_debut' => 'required|date',
-            'date_fin' => 'required|date|after:Date_Debut',
+            'date_fin' => 'required|date|after:date_debut',
             'description' => 'required',
             'domaine' => 'required'
         ]);

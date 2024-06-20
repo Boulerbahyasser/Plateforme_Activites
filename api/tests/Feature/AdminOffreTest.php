@@ -33,20 +33,21 @@ class AdminOffreTest extends TestCase
             'date_debut' => '2024-01-01',
             'date_fin' => '2024-12-31',
             'description' => 'Description de l\'offre de test',
-            'remise' => 15.00,
+            'domaine' => 'Programmation',
+            'remise' => 15,
         ];
 
-
         $response = $this->actingAs($user)->postJson('api/create/offer',$formData);
+       // dd($response);
         $response->assertStatus(201)
                  ->assertJson(['message'=>'the insertion was successful']);
-    
         $this->assertDatabaseHas('offres',[
             'titre' => 'Offre de test',
             'date_debut' => '2024-01-01',
             'date_fin' => '2024-12-31',
             'description' => 'Description de l\'offre de test',
-            'remise' => 15.00,
+            'domaine' => 'Programmation',
+            'remise' => 15,
             'admin_id' => $admin->id,
         ]);
 
@@ -74,6 +75,7 @@ class AdminOffreTest extends TestCase
             'date_debut' => '2024-01-01',
             'date_fin' => '2024-12-31',
             'description' => 'Description de l\'offre existante',
+          //  'domaine' => 'Programmation',
             'remise' => 10.00,
         ]);
 
@@ -83,6 +85,7 @@ class AdminOffreTest extends TestCase
             'date_debut' => '2024-01-01',
             'date_fin' => '2024-12-31',
             'description' => 'Description mise à jour',
+           // 'domaine' => 'Tests logiciels',
             'remise' => 20.00,
         ];
 
@@ -100,6 +103,7 @@ class AdminOffreTest extends TestCase
             'date_debut' => '2024-01-01',
             'date_fin' => '2024-12-31',
             'description' => 'Description mise à jour',
+          //  'domaine' => 'Tests logiciels',
             'remise' => 20.00,
             'admin_id' => $admin->id,
         ]);

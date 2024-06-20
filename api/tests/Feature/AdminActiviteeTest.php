@@ -18,7 +18,6 @@ class AdminActiviteeTest extends TestCase
     /** @test */
     public function testcreateActivity(): void
     {
-        Storage::fake('public');
         $formData = [
             'titre' => 'Programmation avec C++',
             'description' => 'Programmation orientee objet avec C++',

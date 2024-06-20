@@ -15,7 +15,7 @@ class Offre extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = ['admin_id', 'titre','date_debut', 'date_fin', 'description', 'remise'];
+    protected $fillable = ['admin_id', 'titre','date_debut', 'date_fin', 'description','domaine','remise'];
     /**
      * The attributes that should be cast.
      *
