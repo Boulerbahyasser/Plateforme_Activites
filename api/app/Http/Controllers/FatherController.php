@@ -36,8 +36,8 @@ class FatherController extends Controller
        {
 
     //Suppression du parent
-    $user_id=1;
-    $user= User::find(2);
+    $user_id=auth()->id();
+    $user= User::find($user_id);
     $parent=Father::where('user_id', $user_id)->firstOrFail();
     $user->delete();
      $parent->delete();

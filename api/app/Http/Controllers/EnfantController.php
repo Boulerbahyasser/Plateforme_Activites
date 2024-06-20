@@ -7,11 +7,11 @@ use App\Models\Father;
 use Illuminate\Http\Request;
 
 class EnfantController extends Controller
-{     
-    
-    public function AddEnfant(Request $request){ 
-            $id_user=auth()->id;
-            $father=Father::where('user_id',$id_user);
+{
+
+    public function AddEnfant(Request $request){
+            $id_user=auth()->id();
+            $father=Father::where('user_id',$id_user)->first();
             $id_father=$father->id;
             $request->validate([
                 'nom' => 'required|string|max:255',
@@ -25,16 +25,16 @@ class EnfantController extends Controller
             $enfant->prenom = $request->prenom;
             $enfant->date_naissance = $request->date_naissance;
             $enfant->niveau = $request->niveau;
-            
+
             // Enregistrez la photo de l'enfant s'il y en a une
             if ($request->hasFile('photo')) {
                 $path = $request->file('photo')->store('enfants_photos', 'public');
                 $enfant->photo = $path;
             }
-        
+
             $enfant->save();
-             
-       
+
+
         return response()->json(['message'=>'l\'enfant  est bien ajouté',201]);
 
 
@@ -52,7 +52,7 @@ class EnfantController extends Controller
             'niveau' => 'nullable|string|max:255',
             'photo' => 'nullable|image|max:2048', // max:2048 pour limiter la taille de l'image à 2 Mo
         ]);
-    
+
         // Recherche de l'enfant à mettre à jour
         $enfant =Enfant::findOrFail($id);
         // Mettre à jour les données de l'enfant
@@ -60,15 +60,15 @@ class EnfantController extends Controller
                            'prenom'=> $request->prenom,
                           'date_naissance'=> $request->date_naissance,
                           'niveau'=>$request->niveau ,]);
-        
+
         // Mettre à jour la photo de l'enfant s'il y en a une
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('enfants_photos', 'public');
             $enfant->Photo = $path;
         }
-    
+
         $enfant->save();
-    
+
         return response()->json(['success'=>'Données de l\'enfant mises à jour avec succès.',200]);
     }
 
