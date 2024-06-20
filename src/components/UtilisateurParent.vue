@@ -89,7 +89,7 @@
         <input v-model="newChild.prenom" type="text" placeholder="Nom" required>
         <input v-model="newChild.nom" type="text" placeholder="Prénom" required>
         <input v-model="newChild.niveau" type="text" placeholder="Niveau" required>
-        <input v-model="newChild.dateOfBirth" type="date" placeholder="Date de naissance" required>
+        <input v-model="newChild.date_naissance" type="date" placeholder="Date de naissance" required>
         <button type="submit">Ajouter</button>
         <button type="button" @click="closeAddChildForm">Annuler</button>
       </form>
@@ -117,7 +117,7 @@ export default {
       showForm: false,
       showAddChildForm: false,
       selectedChild: { prenom: '', nom: '', niveau: '' },
-      newChild: { prenom: '', nom: '', niveau: '', dateOfBirth: '' },
+      newChild: { prenom: '', nom: '', niveau: '', date_naissance: '' },
       opciones: [
         {
           title: 'Mes Enfants',
@@ -193,7 +193,8 @@ export default {
       this.openForm();
     },
     addNewChild() {
-      axios.post('http://localhost:8000/api/children', this.newChild)
+      console.log(this.newChild);
+      axios.post('http://localhost:8000/api/enfant/create/', this.newChild)
         .then(response => {
           console.log("Enfant ajouté:", response.data);
           this.fetchChildren();

@@ -59,25 +59,27 @@ export default {
     },
     async submitForm() {
       try {
-        // Préparez les données du formulaire pour l'envoi
+        // Prepare form data
         const formData = new FormData();
         formData.append('nom', this.child.nom);
         formData.append('prenom', this.child.prenom);
         formData.append('date_naissance', this.child.date_naissance);
         formData.append('niveau', this.child.niveau);
         if (this.child.photo) {
-          formData.append('photo', this.dataURLtoBlob(this.child.photo));
+          const blob = this.dataURLtoBlob(this.child.photo);
+          formData.append('photo', blob, 'photo.jpg'); // append photo as blob
         }
 
-        // Envoyez les données au backend
-        await axios.post('http://localhost:8000/api/children', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+        // Log formData content
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ': ' + pair[1]);
+        }
 
-        // Redirigez vers la liste des enfants après l'ajout
-        this.$router.push({ name: 'userchildren' });
+        // Send data to backend
+        await axios.post('http://localhost:8000/api/enfant/create/', formData);
+
+        // Redirect to children list after adding
+        this.$router.push({name: 'userchildren'});
       } catch (error) {
         console.error('Erreur lors de l\'ajout de l\'enfant:', error);
       }
@@ -91,7 +93,7 @@ export default {
       while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
       }
-      return new Blob([u8arr], { type: mime });
+      return new Blob([u8arr], {type: mime});
     }
   }
 };

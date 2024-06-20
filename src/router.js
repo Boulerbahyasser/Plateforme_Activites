@@ -25,6 +25,13 @@ import EditChild from "@/components/EditChild.vue";
 import AdminPage from "@/components/ADMIN/AdminPage.vue";
 import AjouterEnfant from "@/components/AjouterEnfant.vue";
 import FAQ from "@/components/FAQ.vue";
+import AnimateurList from "@/components/ANIMATEUR/AnimateurList.vue";
+import AnimDetails from "@/components/ANIMATEUR/AnimDetails.vue";
+import AnimeAddHoraire from "@/components/ANIMATEUR/AnimeAddHoraire.vue";
+import AnimeDispHoraire from "@/components/ANIMATEUR/AnimeDispHoraire.vue";
+import AnimeHoraire from "@/components/ANIMATEUR/AnimeHoraire.vue";
+import AnimeOcuperHoraire from "@/components/ANIMATEUR/AnimeOcuperHoraire.vue";
+import AnimateurDashboard from "@/components/ANIMATEUR/AnimateurDashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -55,7 +62,14 @@ const router = createRouter({
 { path: '/activitychildren/:requestId/activities/:activityId/children', component: ActivityChildren, name: "activityChildren"  ,  meta: { requiresAuth: true , roles: ['parent'] } } ,
     { path:'/AdminPage' , component:AdminPage , name:"AdminPage"},
     { path:'/AjouterEnfant' , component:AjouterEnfant , name:"AjouterEnfant"  ,  meta: { requiresAuth: true , roles: ['parent'] }},
-    { path:'/FAQ' , component:FAQ , name:"FAQ"}
+    { path:'/FAQ' , component:FAQ , name:"FAQ"},
+    { path:'/AnimateurList' , component:AnimateurList , name:"AnimateurList"},
+    { path:'/AnimDetails' , component:AnimDetails , name:"AnimDetails"},
+    { path:'/AnimeAddHoraire' , component:AnimeAddHoraire , name:"AnimeAddHoraire"},
+    { path:'/AnimeDispHoraire' , component:AnimeDispHoraire , name:"AnimeDispHoraire"},
+    { path:'/AnimeHoraire' , component:AnimeHoraire , name:"AnimeHoraire"},
+    { path:'/AnimeOcuperHoraire' , component:AnimeOcuperHoraire , name:"AnimeOcuperHoraire"},
+      { path:'/AnimateurDashboard' , component:AnimateurDashboard , name:"AnimateurDashboard"}
   ]
 });
 

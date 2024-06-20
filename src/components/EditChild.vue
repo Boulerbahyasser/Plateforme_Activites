@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from '@/axios';
 
 export default {
   name: 'EditChild',
@@ -54,7 +54,7 @@ export default {
     async loadChildData() {
       const childId = this.$route.params.id;
       try {
-        const response = await axios.get(`http://localhost:8000/api/children/${childId}`);
+        const response = await axios.get(`http://localhost:8000/api/enfant/update/${childId}`);
         this.child = response.data;
       } catch (error) {
         console.error('Erreur lors de la récupération des données de l\'enfant:', error);
@@ -83,14 +83,13 @@ export default {
           formData.append('photo', this.dataURLtoBlob(this.child.photo));
         }
 
-        // Envoyez les données au backend
-        await axios.post(`http://localhost:8000/api/children/${childId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
+        // Affichez les données du formData dans la console
+        for (let pair of formData.entries()) {
+          console.log(pair[0] + ': ' + pair[1]);
+        }
 
-        // Redirigez vers la liste des enfants après l'édition
+        // Envoyez les données au backend
+        await axios.post(`http://localhost:8000/api/enfant/update/${childId}`, formData);
         this.$router.push({ name: 'userchildren' });
       } catch (error) {
         console.error('Erreur lors de l\'enregistrement des modifications:', error);
@@ -99,7 +98,7 @@ export default {
     async deleteChild() {
       const childId = this.$route.params.id;
       try {
-        await axios.delete(`http://localhost:8000/api/delete/children/${childId}`);
+        await axios.delete(`http://localhost:8000/api/enfant/delete/${childId}`);
         this.$router.push({ name: 'userchildren' });
       } catch (error) {
         console.error('Erreur lors de la suppression de l\'enfant:', error);
