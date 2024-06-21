@@ -31,7 +31,7 @@
 
 <script>
 import axios from 'axios';
-import UtilisateurParent from "@/components/UtilisateurParent.vue";
+import UtilisateurParent from "@/components/PARENT/UtilisateurParent.vue";
 
 export default {
   components: {

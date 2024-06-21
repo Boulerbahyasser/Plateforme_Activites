@@ -3,9 +3,7 @@
     <h1>Tableau de Bord des Animateurs</h1>
     <nav>
       <ul>
-        <li><router-link to="/AnimateurList"><i class="fas fa-users"></i> Liste des Animateurs</router-link></li>
-        <li><router-link to="/AnimDetails"><i class="fas fa-info-circle"></i> Détails de l'Animateur</router-link></li>
-        <li><router-link to="/AnimeAddHoraire"><i class="fas fa-calendar-alt"></i> Horaires de l'Animateur</router-link></li>
+        <li><router-link to="/AnimeHoraire"><i class="fas fa-calendar-alt"></i> Horaires de l'Animateur</router-link></li>
         <li><router-link to="/AnimeOcuperHoraire"><i class="fas fa-calendar-times"></i> Horaires Occupés</router-link></li>
         <li><router-link to="/AnimeDispHoraire"><i class="fas fa-calendar-check"></i> Horaires Disponibles</router-link></li>
         <li><router-link to="/AnimeAddHoraire"><i class="fas fa-plus-circle"></i> Ajouter des Horaires</router-link></li>

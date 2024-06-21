@@ -1,11 +1,11 @@
 <template>
   <div class="conteneurConnexion">
     <div class="sectionGauche">
-      <img src="@/assets/child.png" alt="Image de connexion" class="imageConnexion">
+      <img src="../../assets/child.png" alt="Image de connexion" class="imageConnexion">
     </div>
     <div class="sectionDroite">
       <div class="conteneurFormulaire">
-        <img src="@/assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
+        <img src="../../assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
         <h1>Connexion</h1>
         <form @submit.prevent="submitForm">
           <div class="groupeInput">

@@ -9,7 +9,7 @@
 <script>
 import FeaturedOffer from './FeaturedOffer.vue';
 import OffersList from './OffersList.vue';
-import UtilisateurParent from "@/components/UtilisateurParent.vue";
+import UtilisateurParent from "@/components/PARENT/UtilisateurParent.vue";
 
 export default {
   components: {

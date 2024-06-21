@@ -1,11 +1,11 @@
 <template>
   <div class="ConteneurInscription">
     <div class="sectionGauche">
-      <img src="@/assets/child.png" alt="Image d'inscription" class="imageInscription">
+      <img src="../../assets/child.png" alt="Image d'inscription" class="imageInscription">
     </div>
     <div class="sectionDroite">
       <div class="conteneurFormulaire">
-        <img src="@/assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
+        <img src="../../assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
         <h1>Inscription</h1>
         <form @submit.prevent="submitForm">
 

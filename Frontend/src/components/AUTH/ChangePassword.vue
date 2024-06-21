@@ -1,11 +1,11 @@
 <template>
   <div class="ConteneurChangementMotDePasse">
     <div class="SectionGauche">
-      <img src="@/assets/child.png" alt="Image de changement de mot de passe" class="ImageConnexion">
+      <img src="../../assets/child.png" alt="Image de changement de mot de passe" class="ImageConnexion">
     </div>
     <div class="SectionDroite">
       <div class="ConteneurFormulaire">
-        <img src="@/assets/logo2.png" alt="Logo de la plateforme" class="LogoPlateforme">
+        <img src="../../assets/logo2.png" alt="Logo de la plateforme" class="LogoPlateforme">
         <h1>Changer le Mot de Passe</h1>
         <form @submit.prevent="submitForm">
           <div class="GroupeInput">

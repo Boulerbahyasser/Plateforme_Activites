@@ -1,12 +1,12 @@
 <template>
   <div class="ConteneurResetMotDePasse">
     <div class="sectionGauche">
-      <img src="@/assets/child.png" alt="Image d'inscription" class="imageInscription">
+      <img src="../../assets/child.png" alt="Image d'inscription" class="imageInscription">
     </div>
     <div class="sectionDroite">
       <div class="conteneurFormulaire">
         <div class="conteneurLogo">
-          <img src="@/assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
+          <img src="../../assets/logo2.png" alt="Logo de la plateforme" class="logoPlateforme">
         </div>
         <h1>Mot de passe oublié</h1>
         <form @submit.prevent="submitForm">
