@@ -98,10 +98,11 @@ button {
   border-radius: 6px; /* Coins légèrement plus arrondis */
   font-size: 1.1rem; /* Taille de police augmentée */
   letter-spacing: 1px; /* Espacement des lettres pour un effet stylisé */
+  background-color: #007bff;
 }
 
 button:hover {
-  background-color: #2980b9; /* Couleur de survol */
+  background-color: #0056b3; /* Couleur de survol */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Ombre plus marquée au survol */
 }
 

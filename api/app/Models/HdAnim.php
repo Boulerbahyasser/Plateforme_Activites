@@ -14,7 +14,8 @@ class HdAnim extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [];
+    protected $fillable = ['animateur_id', 'horaire_id'];
+
 
     /**
      * Get the animateurs that belong to the HdAnim.
@@ -31,4 +32,5 @@ class HdAnim extends Model
     {
         return $this->belongsToMany(Horaire::class);
     }
+
 }

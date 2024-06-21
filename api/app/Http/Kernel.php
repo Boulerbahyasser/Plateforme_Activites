@@ -68,6 +68,7 @@ class Kernel extends HttpKernel
         'Check_Admin_User'=>\App\Http\Middleware\Check_Admin_User::class,
         'Check_Animateur_User'=>\App\Http\Middleware\Check_Animateur_User::class,
         'Check_Parent_User'=>\App\Http\Middleware\Check_Parent_User::class,
+        'recaptcha' => \App\Http\Middleware\RecaptchaMiddleware::class,
 
     ];
 }

@@ -13,7 +13,6 @@ class PDFController extends Controller
         $dompdf = new Dompdf();
         $totale_ht = number_format($totale_ht, 2, ',', ' ');
         $totale_ttc = number_format($totale_ttc, 2, ',', ' ');
-
         $html = '
     <style>
         body {
@@ -87,22 +86,11 @@ class PDFController extends Controller
             <h2>Merci pour votre confiance !</h2>
         </div>
     </div>';
-// Load HTML content
         $dompdf->loadHtml($html);
-
-// Render the HTML as PDF
         $dompdf->render();
-
-// Output the generated PDF content
         $pdfContent = $dompdf->output();
-
-// Define file path
         $filePath = 'public/devis/' . $demande_id . '.pdf';
-
-// Store the PDF content to the specified file path
         Storage::put($filePath, $pdfContent);
-
-// Return the file path
         return $filePath;
     }
 }

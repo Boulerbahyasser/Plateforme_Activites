@@ -24,7 +24,7 @@ class Horaire extends Model
      */
     public function animateurs(): BelongsToMany
     {
-        return $this->belongsToMany(Animateur::class, 'hdanims', 'horaire_id', 'animateur_id');
+        return $this->belongsToMany(Animateur::class, 'hd_anims', 'horaire_id', 'animateur_id');
     }
 
     /**
@@ -35,12 +35,18 @@ class Horaire extends Model
         return $this->belongsToMany(Enfant::class, 'planning_enfs', 'horaire_id', 'enfant_id');
     }
 
-    /**
-     * Get the animateurs associated with this horaire through planning_anims pivot table.
-     */
-    public function animateursPlanning(): BelongsToMany
+
+
+    public function hdAnims()
     {
-        return $this->belongsToMany(Animateur::class, 'planning_anims', 'horaire_id', 'animateur_id');
+        // Par exemple, relation avec HdAnim si elle existe
+        return $this->hasMany(HdAnim::class);
+    }
+
+    public function planningAnims()
+    {
+        // Par exemple, relation avec PlanningAnim si elle existe
+        return $this->hasMany(PlanningAnim::class);
     }
 
 

@@ -23,8 +23,8 @@ class Check_Admin_User
 
         }else{
             return response()->json([
-                'message'=>'unauthorized you are not an adimin ',
-            ],403 );
+                'message'=>'unauthorized you are not an admin ',
+            ],401);
         }
     }
 }

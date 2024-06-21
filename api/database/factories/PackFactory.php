@@ -13,7 +13,7 @@ class PackFactory extends Factory
     {
         return [
             'nom' => $this->faker->word,
-            'remise' => $this->faker->randomFloat(2, 0, 50),
+            'remise' => $this->faker->randomFloat(2, 0, 10),
         ];
     }
 }

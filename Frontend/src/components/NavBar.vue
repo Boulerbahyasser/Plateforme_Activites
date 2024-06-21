@@ -1,48 +1,46 @@
- <template>
-
-  <nav class="navbar">
-    <div class="navbar-left">
-      <router-link to="/" class="navbar-brand">
-        <img src="@/assets/logo.png" alt="Logo" class="navbar-logo">
+<template>
+  <nav class="BarreDeNavigation">
+    <div class="NavigationGauche">
+      <router-link to="/" class="MarqueNavigation">
+        <img src="@/assets/logo2.png" alt="Logo" class="LogoNavigation">
       </router-link>
     </div>
-    <ul class="navbar-center" :class="{ 'show': isMenuOpen }"> <!-- Si isMenuOpen est vrai (true), alors la classe show sera ajoutée à l'élément ul. Si isMenuOpen est faux (false), alors la classe show ne sera pas appliquée. -->
-      <li><router-link to="/">Welcome</router-link></li>
-      <li><router-link to="/about">About Us</router-link></li>
-      <li><router-link to="/how-to-use">How to use</router-link></li>
+    <ul class="NavigationCentre" :class="{ 'afficher': menuOuvert }">
+      <li><router-link to="/">Accueil</router-link></li>
+      <li><router-link to="/AproposNous">À propos de nous</router-link></li>
+      <li><router-link to="/how-to-use">FAQ</router-link></li>
       <li><router-link to="/contact">Contact</router-link></li>
     </ul>
-    <div class="navbar-right">
+    <div class="NavigationDroite">
       <router-link to="/notification"><i class="fas fa-bell"></i></router-link>
       <router-link to="/profile"><i class="fas fa-user"></i></router-link>
     </div>
-    <button class="nav-toggle" @click="toggleMenu">
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
+    <button class="ToggleNavigation" @click="basculerMenu">
+      <span class="Barre"></span>
+      <span class="Barre"></span>
+      <span class="Barre"></span>
     </button>
   </nav>
-
 </template>
 
 <script>
 export default {
-  name: 'NavbarElement',
+  name: 'ElementNavigation',
   data() {
     return {
-      isMenuOpen: false,
+      menuOuvert: false,
     };
   },
   methods: {
-    toggleMenu() {
-      this.isMenuOpen = !this.isMenuOpen;
+    basculerMenu() {
+      this.menuOuvert = !this.menuOuvert;
     }
   }
 };
 </script>
 
 <style scoped>
-.navbar {
+.BarreDeNavigation {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -55,30 +53,28 @@ export default {
   z-index: 1000;
 }
 
-.navbar-left, .navbar-right {
+.NavigationGauche, .NavigationDroite {
   flex: 1;
 }
 
-.navbar-left {
+.NavigationGauche {
   flex: 1;
-  position: relative; /* Ajout de position relative */
+  position: relative;
 }
 
-
-.navbar-left::after {
+.NavigationGauche::after {
   content: "";
   display: block;
-  width: 2px;  /* Épaisseur de la ligne */
-  height: 100%; /* Hauteur pour couvrir entièrement la hauteur de la barre de navigation */
-  background-color: white; /* Couleur de la ligne */
+  width: 2px;
+  height: 100%;
+  background-color: white;
   position: absolute;
-  right: 0; /* Positionner à la droite du `navbar-left` */
+  right: 0;
   top: 0;
 }
 
-
-.navbar-center {
-  flex: 3; /* élément prendra deux 3 plus d'espace disponible que les autres éléments flexibles avec une valeur flex de 1.*/
+.NavigationCentre {
+  flex: 3;
   list-style: none;
   display: flex;
   justify-content: space-around;
@@ -86,23 +82,23 @@ export default {
   padding: 0;
 }
 
-.navbar-logo {
-  height: 50px;
+.LogoNavigation {
+  height: 70px;
   transition: transform 0.3s ease-in-out;
 }
 
-.navbar-logo:hover {
+.LogoNavigation:hover {
   transform: scale(1.1);
 }
 
-.navbar a {
+.BarreDeNavigation a {
   text-decoration: none;
   color: white;
   font-weight: 500;
   transition: color 0.3s ease-in-out;
 }
 
-.navbar a:hover {
+.BarreDeNavigation a:hover {
   font-weight: bold;
 }
 
@@ -116,7 +112,7 @@ export default {
   transform: rotate(180deg);
 }
 
-.nav-toggle {
+.ToggleNavigation {
   display: none;
   flex-direction: column;
   cursor: pointer;
@@ -124,7 +120,7 @@ export default {
   background: none;
 }
 
-.nav-toggle .bar {
+.ToggleNavigation .Barre {
   display: block;
   width: 25px;
   height: 3px;
@@ -134,11 +130,11 @@ export default {
 }
 
 @media (max-width: 768px) {
-   .navbar-left::after {
-    display: none; /* Cache la ligne verticale sur les petits écrans */
+  .NavigationGauche::after {
+    display: none;
   }
 
-  .navbar-center {
+  .NavigationCentre {
     position: absolute;
     top: 60px;
     width: 100%;
@@ -147,11 +143,11 @@ export default {
     display: none;
   }
 
-  .navbar-center.show {
+  .NavigationCentre.afficher {
     display: flex;
   }
 
-  .nav-toggle {
+  .ToggleNavigation {
     display: flex;
   }
 }
